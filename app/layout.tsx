@@ -1,10 +1,26 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Noto_Sans_JP, Noto_Serif_JP } from 'next/font/google'
 import './globals.css'
 
+const notoSansJP = Noto_Sans_JP({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-noto-sans-jp',
+  display: 'swap',
+})
+
+const notoSerifJP = Noto_Serif_JP({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-noto-serif-jp',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: '我妻農場 | 宮城県角田市のお米 農家直販',
+  description:
+    '宮城県角田市の我妻農場から、丹精込めて育てた新鮮なお米を直接お届けします。白米・玄米を各種サイズで販売中。',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -26,11 +42,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  colorScheme: 'light',
+  themeColor: '#f3efe4',
 }
 
 export default function RootLayout({
@@ -39,8 +52,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html
+      lang="ja"
+      className={`light bg-background ${notoSansJP.variable} ${notoSerifJP.variable}`}
+    >
+      <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
