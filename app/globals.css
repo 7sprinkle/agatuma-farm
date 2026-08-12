@@ -38,6 +38,8 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-clay: var(--clay);
+  --color-clay-foreground: var(--clay-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -49,42 +51,45 @@
 
 :root {
   color-scheme: light;
-  /* 和紙のようなオフホワイト / 生成り */
-  --background: oklch(0.97 0.012 85);
-  --foreground: oklch(0.28 0.02 60);
-  --card: oklch(0.985 0.008 85);
-  --card-foreground: oklch(0.28 0.02 60);
-  --popover: oklch(0.985 0.008 85);
-  --popover-foreground: oklch(0.28 0.02 60);
-  /* 深い緑（稲・自然） */
-  --primary: oklch(0.42 0.065 148);
-  --primary-foreground: oklch(0.98 0.012 85);
-  /* 温かみのある茶色 */
-  --secondary: oklch(0.92 0.02 75);
-  --secondary-foreground: oklch(0.35 0.04 65);
-  --muted: oklch(0.93 0.014 82);
-  --muted-foreground: oklch(0.5 0.03 65);
-  /* アクセント：赤みがかった朱色 */
-  --accent: oklch(0.58 0.17 36);
-  --accent-foreground: oklch(0.98 0.012 85);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.87 0.02 78);
-  --input: oklch(0.87 0.02 78);
-  --ring: oklch(0.42 0.065 148);
-  --chart-1: oklch(0.42 0.065 148);
-  --chart-2: oklch(0.58 0.17 36);
-  --chart-3: oklch(0.55 0.06 70);
-  --chart-4: oklch(0.7 0.09 85);
-  --chart-5: oklch(0.35 0.04 65);
-  --radius: 0.5rem;
-  --sidebar: oklch(0.97 0.012 85);
-  --sidebar-foreground: oklch(0.28 0.02 60);
-  --sidebar-primary: oklch(0.42 0.065 148);
-  --sidebar-primary-foreground: oklch(0.98 0.012 85);
-  --sidebar-accent: oklch(0.58 0.17 36);
-  --sidebar-accent-foreground: oklch(0.98 0.012 85);
-  --sidebar-border: oklch(0.87 0.02 78);
-  --sidebar-ring: oklch(0.42 0.065 148);
+  /* 米紙のような温かいアイボリー / 生成り */
+  --background: oklch(0.965 0.014 83);
+  --foreground: oklch(0.26 0.014 60);
+  --card: oklch(0.98 0.012 84);
+  --card-foreground: oklch(0.26 0.014 60);
+  --popover: oklch(0.98 0.012 84);
+  --popover-foreground: oklch(0.26 0.014 60);
+  /* 落ち着いた深い苔緑 */
+  --primary: oklch(0.4 0.045 145);
+  --primary-foreground: oklch(0.97 0.014 83);
+  /* 亜麻・粘土のベージュ */
+  --secondary: oklch(0.9 0.018 74);
+  --secondary-foreground: oklch(0.33 0.028 62);
+  --muted: oklch(0.925 0.016 80);
+  --muted-foreground: oklch(0.48 0.022 62);
+  /* アクセント：柿・土のような温かい橙茶 */
+  --accent: oklch(0.55 0.115 45);
+  --accent-foreground: oklch(0.97 0.014 83);
+  --destructive: oklch(0.55 0.16 32);
+  --border: oklch(0.86 0.02 76);
+  --input: oklch(0.86 0.02 76);
+  --ring: oklch(0.4 0.045 145);
+  --chart-1: oklch(0.4 0.045 145);
+  --chart-2: oklch(0.55 0.115 45);
+  --chart-3: oklch(0.55 0.05 70);
+  --chart-4: oklch(0.7 0.08 85);
+  --chart-5: oklch(0.33 0.028 62);
+  --radius: 0.25rem;
+  --sidebar: oklch(0.965 0.014 83);
+  --sidebar-foreground: oklch(0.26 0.014 60);
+  --sidebar-primary: oklch(0.4 0.045 145);
+  --sidebar-primary-foreground: oklch(0.97 0.014 83);
+  --sidebar-accent: oklch(0.55 0.115 45);
+  --sidebar-accent-foreground: oklch(0.97 0.014 83);
+  --sidebar-border: oklch(0.86 0.02 76);
+  --sidebar-ring: oklch(0.4 0.045 145);
+  /* 追加：粘土ベージュ帯 */
+  --clay: oklch(0.9 0.022 68);
+  --clay-foreground: oklch(0.3 0.024 60);
 }
 
 .dark {
@@ -181,8 +186,8 @@
 /* スクロールフェードイン */
 .fade-in-section {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transform: translateY(28px);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 .fade-in-section.is-visible {
@@ -195,4 +200,29 @@
     transform: none;
     transition: none;
   }
+}
+
+/* 縦書き（見出し装飾用） */
+.vertical-rl {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+/* 本文の行間・字間（エディトリアル） */
+.prose-jp {
+  line-height: 2;
+  letter-spacing: 0.02em;
+}
+
+/* 画像のゆるやかなズーム */
+.img-zoom {
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .img-zoom {
+  transform: scale(1.04);
+}
+
+/* 番号・見出しの細い罫線 */
+.hairline {
+  background-color: var(--border);
 }

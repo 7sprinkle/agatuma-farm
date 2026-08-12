@@ -2,33 +2,49 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { products, type Product } from '@/lib/site-data'
+import { products } from '@/lib/site-data'
 import { SectionHeading } from '@/components/section-heading'
 import { FadeIn } from '@/components/fade-in'
 import { useOrder } from '@/components/order-context'
 
 const categories = [
-  { key: 'hakumai', label: '白米' },
-  { key: 'genmai', label: '玄米' },
+  {
+    key: 'hakumai',
+    label: '白米',
+    reading: 'HAKUMAI',
+    image: '/images/product-hakumai.png',
+    lead: '精米したての、澄んだ白さ。',
+    copy: 'ふっくらと炊きあがり、艶やかに光る一粒ひとつぶ。毎日の食卓の真ん中にふさわしい、素直で飽きのこない味わいです。',
+  },
+  {
+    key: 'genmai',
+    label: '玄米',
+    reading: 'GENMAI',
+    image: '/images/product-genmai.png',
+    lead: '大地の滋養を、そのままに。',
+    copy: '精米前の栄養をまるごと。噛むほどに広がる香ばしさと自然な甘み。健やかな暮らしに寄り添う、力強い一膳です。',
+  },
 ] as const
 
 export function ServiceSection() {
   const [active, setActive] = useState<'hakumai' | 'genmai'>('hakumai')
   const { selectProduct } = useOrder()
+  const current = categories.find((c) => c.key === active)!
   const visible = products.filter((p) => p.category === active)
 
   return (
-    <section id="service" className="bg-secondary/40 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
+    <section id="service" className="bg-clay py-28 text-clay-foreground md:py-40">
+      <div className="mx-auto max-w-[86rem] px-6 md:px-10">
         <FadeIn>
-          <SectionHeading en="Service" ja="商品一覧" />
+          <SectionHeading en="Service" ja="農場のお米" index="02" />
         </FadeIn>
 
-        <FadeIn className="mt-12 flex justify-center">
+        {/* カテゴリ切替（下線タブ） */}
+        <FadeIn className="mt-12">
           <div
             role="tablist"
             aria-label="商品カテゴリ"
-            className="inline-flex rounded-full border border-border bg-card p-1"
+            className="flex items-end gap-10 border-b border-border"
           >
             {categories.map((c) => (
               <button
@@ -36,66 +52,84 @@ export function ServiceSection() {
                 role="tab"
                 aria-selected={active === c.key}
                 onClick={() => setActive(c.key)}
-                className={`rounded-full px-8 py-2.5 font-serif text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
+                className={`group -mb-px flex items-baseline gap-3 border-b-2 pb-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring ${
                   active === c.key
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground/70 hover:text-primary'
+                    ? 'border-accent text-foreground'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {c.label}
+                <span className="font-serif text-2xl font-medium md:text-3xl">{c.label}</span>
+                <span className="font-sans text-[0.65rem] tracking-[0.25em]">{c.reading}</span>
               </button>
             ))}
           </div>
         </FadeIn>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {visible.map((product, i) => (
-            <FadeIn as="div" key={product.id} delay={i * 70}>
-              <ProductCard product={product} onOrder={() => selectProduct(product.id)} />
-            </FadeIn>
-          ))}
+        {/* 大きな写真 ＋ 品書き */}
+        <div className="mt-14 grid items-start gap-12 lg:grid-cols-2 lg:gap-20">
+          <FadeIn>
+            <figure className="group relative">
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <Image
+                  key={current.image}
+                  src={current.image || '/placeholder.svg'}
+                  alt={`${current.label}のイメージ`}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="img-zoom object-cover"
+                />
+              </div>
+              <figcaption className="mt-6">
+                <p className="font-serif text-2xl font-medium leading-snug text-foreground text-balance md:text-3xl">
+                  {current.lead}
+                </p>
+                <p className="mt-4 max-w-md font-sans text-sm leading-relaxed text-muted-foreground">
+                  {current.copy}
+                </p>
+              </figcaption>
+            </figure>
+          </FadeIn>
+
+          <FadeIn delay={120}>
+            <div>
+              <p className="font-sans text-[0.7rem] tracking-[0.35em] text-accent">品書き ・ PRICE</p>
+              <ul className="mt-6 border-t border-border">
+                {visible.map((product) => (
+                  <li key={product.id}>
+                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-2 border-b border-border py-7">
+                      <div className="flex items-baseline gap-4">
+                        <h3 className="font-serif text-2xl font-medium text-foreground">
+                          {product.size}
+                        </h3>
+                        <span className="font-sans text-xs tracking-widest text-muted-foreground">
+                          {product.name}
+                        </span>
+                      </div>
+                      <p className="text-right font-serif text-xl text-foreground">
+                        ¥{product.price.toLocaleString()}
+                        <span className="ml-1 font-sans text-[0.65rem] text-muted-foreground">
+                          税込
+                        </span>
+                      </p>
+                      <p className="col-span-2 max-w-md font-sans text-sm leading-relaxed text-muted-foreground">
+                        {product.description}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => selectProduct(product.id)}
+                        className="group col-span-2 -mt-1 inline-flex w-fit items-center gap-3 font-sans text-sm tracking-wide text-foreground transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                      >
+                        <span className="h-px w-8 bg-accent transition-all duration-300 group-hover:w-12" />
+                        この商品を注文する
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeIn>
         </div>
       </div>
     </section>
-  )
-}
-
-function ProductCard({ product, onOrder }: { product: Product; onOrder: () => void }) {
-  return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card transition-all hover:-translate-y-1.5 hover:shadow-lg">
-      <div className="relative aspect-square overflow-hidden">
-        <Image
-          src={product.image || '/placeholder.svg'}
-          alt={`${product.name} ${product.size}`}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 font-serif text-sm font-semibold text-primary backdrop-blur-sm">
-          {product.name}
-        </span>
-      </div>
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-baseline justify-between gap-2">
-          <h3 className="font-serif text-xl font-bold text-foreground">
-            {product.name} {product.size}
-          </h3>
-        </div>
-        <p className="mt-1 font-sans text-lg font-bold text-accent">
-          ¥{product.price.toLocaleString()}
-          <span className="ml-1 text-xs font-normal text-muted-foreground">税込</span>
-        </p>
-        <p className="mt-3 flex-1 font-sans text-sm leading-relaxed text-muted-foreground">
-          {product.description}
-        </p>
-        <button
-          type="button"
-          onClick={onOrder}
-          className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 font-sans text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-        >
-          この商品を注文する
-        </button>
-      </div>
-    </article>
   )
 }

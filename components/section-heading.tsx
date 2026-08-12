@@ -1,22 +1,27 @@
 type SectionHeadingProps = {
   en: string
   ja: string
-  align?: 'left' | 'center'
+  index?: string
+  className?: string
 }
 
-export function SectionHeading({ en, ja, align = 'center' }: SectionHeadingProps) {
+export function SectionHeading({ en, ja, index, className }: SectionHeadingProps) {
   return (
-    <div className={align === 'center' ? 'text-center' : 'text-left'}>
-      <p className="font-sans text-xs font-semibold uppercase tracking-[0.35em] text-accent">
-        {en}
-      </p>
-      <h2 className="mt-3 font-serif text-3xl font-bold text-foreground md:text-4xl text-balance">
+    <div className={className}>
+      <div className="flex items-center gap-4">
+        {index && (
+          <span className="font-serif text-sm tracking-widest text-accent">
+            {index}
+          </span>
+        )}
+        <span className="font-sans text-[0.7rem] font-medium uppercase tracking-[0.4em] text-muted-foreground">
+          {en}
+        </span>
+        <span className="h-px flex-1 bg-border" aria-hidden="true" />
+      </div>
+      <h2 className="mt-6 font-serif text-4xl font-medium leading-tight text-foreground text-balance md:text-5xl lg:text-6xl">
         {ja}
       </h2>
-      <span
-        className={`mt-5 block h-px w-16 bg-primary ${align === 'center' ? 'mx-auto' : ''}`}
-        aria-hidden="true"
-      />
     </div>
   )
 }

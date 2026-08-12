@@ -19,53 +19,60 @@ const points = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="bg-background py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
+    <section id="about" className="bg-background py-28 md:py-40">
+      <div className="mx-auto max-w-[86rem] px-6 md:px-10">
         <FadeIn>
-          <SectionHeading en="About" ja="我妻農場について" />
+          <SectionHeading en="About" ja="我妻農場について" index="03" />
         </FadeIn>
 
-        <div className="mt-14 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <FadeIn>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-md">
+        {/* 導入：非対称の大きな文章と写真 */}
+        <div className="mt-16 grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <FadeIn className="lg:col-span-7">
+            <p className="font-serif text-3xl font-medium leading-[1.5] text-foreground text-balance md:text-4xl lg:text-[2.75rem]">
+              安心・安全なお米を、
+              <br className="hidden sm:block" />
+              まっすぐ食卓へ。
+            </p>
+            <p className="prose-jp mt-8 max-w-xl font-sans text-base text-muted-foreground text-pretty">
+              我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。
+              自然の恵みと向き合いながら、手間を惜しまず育てたお米を、
+              中間を通さず皆さまの食卓へ直接お届けしています。
+              毎日の一膳が、少しでも豊かなものになりますように。
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={120} className="lg:col-span-5">
+            <div className="relative aspect-[3/4] overflow-hidden">
               <Image
                 src="/images/about-farm.png"
                 alt="収穫したお米を両手で包む農家の手"
                 fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 100vw, 40vw"
                 className="object-cover"
               />
             </div>
           </FadeIn>
+        </div>
 
-          <FadeIn delay={120}>
-            <div>
-              <p className="font-serif text-2xl font-bold leading-relaxed text-foreground text-balance md:text-3xl">
-                安心・安全なお米を、
-                <br />
-                直接お届けします。
-              </p>
-              <p className="mt-6 font-sans text-base leading-relaxed text-muted-foreground text-pretty">
-                我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。
-                自然の恵みと向き合いながら、手間を惜しまず育てたお米を、
-                中間を通さず皆さまの食卓へ直接お届けしています。
-                毎日の一膳が、少しでも豊かなものになりますように。
-              </p>
-
-              <ul className="mt-8 space-y-5">
-                {points.map((p) => (
-                  <li key={p.title} className="border-l-2 border-primary pl-4">
-                    <h3 className="font-serif text-lg font-semibold text-foreground">
-                      {p.title}
-                    </h3>
-                    <p className="mt-1 font-sans text-sm leading-relaxed text-muted-foreground">
-                      {p.body}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </FadeIn>
+        {/* 3つの約束：番号付きエディトリアルリスト */}
+        <div className="mt-20 border-t border-border md:mt-28">
+          <div className="grid gap-px md:grid-cols-3">
+            {points.map((p, i) => (
+              <FadeIn as="div" key={p.title} delay={i * 120}>
+                <div className="border-b border-border py-10 md:border-b-0 md:pr-8 md:pt-12">
+                  <span className="font-serif text-sm tracking-widest text-accent">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="mt-5 font-serif text-2xl font-medium text-foreground">
+                    {p.title}
+                  </h3>
+                  <p className="mt-4 font-sans text-sm leading-relaxed text-muted-foreground">
+                    {p.body}
+                  </p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </div>
     </section>

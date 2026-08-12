@@ -1,11 +1,10 @@
-import { MapPin, Phone, Clock, Car, Train } from 'lucide-react'
 import { SectionHeading } from '@/components/section-heading'
 import { FadeIn } from '@/components/fade-in'
 
 const info = [
   {
-    icon: MapPin,
     label: '所在地',
+    en: 'Address',
     value: (
       <>
         〒981-1525
@@ -15,13 +14,13 @@ const info = [
     ),
   },
   {
-    icon: Phone,
     label: '電話番号',
+    en: 'Tel',
     value: <>0224-00-0000（受付 9:00〜17:00）</>,
   },
   {
-    icon: Clock,
     label: '営業時間',
+    en: 'Hours',
     value: (
       <>
         9:00〜17:00
@@ -30,66 +29,54 @@ const info = [
       </>
     ),
   },
+  {
+    label: 'お車でお越しの場合',
+    en: 'By Car',
+    value: <>東北自動車道 白石ICより約20分。駐車場を完備しています。</>,
+  },
+  {
+    label: '最寄り駅',
+    en: 'By Train',
+    value: <>阿武隈急行「角田駅」よりお車で約15分。</>,
+  },
 ]
 
 export function AccessSection() {
   const mapQuery = encodeURIComponent('宮城県角田市君萱字別当内42-1')
 
   return (
-    <section id="access" className="bg-secondary/40 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
+    <section id="access" className="bg-background py-28 md:py-40">
+      <div className="mx-auto max-w-[86rem] px-6 md:px-10">
         <FadeIn>
-          <SectionHeading en="Access" ja="アクセス" />
+          <SectionHeading en="Access" ja="アクセス" index="04" />
         </FadeIn>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-2">
+        <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
           <FadeIn>
-            <div className="flex h-full flex-col justify-center gap-6">
+            <dl className="border-t border-border">
               {info.map((item) => (
-                <div key={item.label} className="flex gap-4">
-                  <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <item.icon className="size-5" />
-                  </div>
-                  <div>
-                    <p className="font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                <div
+                  key={item.label}
+                  className="grid grid-cols-1 gap-1 border-b border-border py-6 sm:grid-cols-[10rem_1fr] sm:gap-6"
+                >
+                  <dt className="flex items-baseline gap-3">
+                    <span className="font-serif text-base font-medium text-foreground">
                       {item.label}
-                    </p>
-                    <p className="mt-1 font-sans text-base leading-relaxed text-foreground">
-                      {item.value}
-                    </p>
-                  </div>
+                    </span>
+                    <span className="font-sans text-[0.6rem] tracking-[0.25em] text-accent">
+                      {item.en}
+                    </span>
+                  </dt>
+                  <dd className="font-sans text-sm leading-relaxed text-muted-foreground">
+                    {item.value}
+                  </dd>
                 </div>
               ))}
-
-              <div className="mt-2 grid gap-4 rounded-lg border border-border bg-card p-5 sm:grid-cols-2">
-                <div className="flex gap-3">
-                  <Car className="size-5 shrink-0 text-primary" />
-                  <div>
-                    <p className="font-serif text-sm font-semibold text-foreground">
-                      お車でお越しの場合
-                    </p>
-                    <p className="mt-1 font-sans text-sm text-muted-foreground">
-                      東北自動車道 白石ICより約20分。駐車場を完備しています。
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <Train className="size-5 shrink-0 text-primary" />
-                  <div>
-                    <p className="font-serif text-sm font-semibold text-foreground">
-                      最寄り駅
-                    </p>
-                    <p className="mt-1 font-sans text-sm text-muted-foreground">
-                      阿武隈急行「角田駅」よりお車で約15分。
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </dl>
           </FadeIn>
 
           <FadeIn delay={120}>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border shadow-sm lg:aspect-auto lg:h-full">
+            <div className="relative aspect-[4/3] overflow-hidden border border-border lg:aspect-auto lg:h-full lg:min-h-[26rem]">
               <iframe
                 title="我妻農場の地図"
                 src={`https://maps.google.com/maps?q=${mapQuery}&z=14&output=embed`}
