@@ -46,48 +46,42 @@ export function AccessSection() {
 
   return (
     <section id="access" className="bg-background py-28 md:py-40">
-      <div className="mx-auto max-w-[86rem] px-6 md:px-10">
+      <div className="mx-auto max-w-2xl px-6">
         <FadeIn>
-          <SectionHeading en="Access" ja="アクセス" index="04" />
+          <SectionHeading en="Access" ja="アクセス" />
         </FadeIn>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
-          <FadeIn>
-            <dl className="border-t border-border">
-              {info.map((item) => (
-                <div
-                  key={item.label}
-                  className="grid grid-cols-1 gap-1 border-b border-border py-6 sm:grid-cols-[10rem_1fr] sm:gap-6"
-                >
-                  <dt className="flex items-baseline gap-3">
-                    <span className="font-serif text-base font-medium text-foreground">
-                      {item.label}
-                    </span>
-                    <span className="font-sans text-[0.6rem] tracking-[0.25em] text-accent">
-                      {item.en}
-                    </span>
-                  </dt>
-                  <dd className="font-sans text-sm leading-relaxed text-muted-foreground">
-                    {item.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </FadeIn>
-
-          <FadeIn delay={120}>
-            <div className="relative aspect-[4/3] overflow-hidden border border-border lg:aspect-auto lg:h-full lg:min-h-[26rem]">
-              <iframe
-                title="我妻農場の地図"
-                src={`https://maps.google.com/maps?q=${mapQuery}&z=14&output=embed`}
-                className="size-full min-h-[320px]"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </FadeIn>
-        </div>
+        <dl className="mt-16 border-t border-border">
+          {info.map((item, i) => (
+            <FadeIn as="div" key={item.label} delay={i * 70}>
+              <div className="flex flex-col items-center gap-2 border-b border-border py-8 text-center">
+                <dt className="flex items-baseline gap-3">
+                  <span className="font-serif text-base font-medium text-foreground">
+                    {item.label}
+                  </span>
+                  <span className="font-sans text-[0.6rem] tracking-[0.25em] text-accent">
+                    {item.en}
+                  </span>
+                </dt>
+                <dd className="prose-jp font-sans text-sm text-muted-foreground">{item.value}</dd>
+              </div>
+            </FadeIn>
+          ))}
+        </dl>
       </div>
+
+      {/* 地図は本文より広く */}
+      <FadeIn className="mx-auto mt-16 max-w-5xl px-6">
+        <div className="relative aspect-[16/9] overflow-hidden border border-border">
+          <iframe
+            title="我妻農場の地図"
+            src={`https://maps.google.com/maps?q=${mapQuery}&z=14&output=embed`}
+            className="size-full"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </FadeIn>
     </section>
   )
 }
