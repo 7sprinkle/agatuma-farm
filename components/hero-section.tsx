@@ -2,9 +2,20 @@ import Image from 'next/image'
 
 export function HeroSection() {
   return (
-    <section id="top" className="relative h-[100dvh] min-h-[100dvh] w-full overflow-hidden">
+    <section
+      id="top"
+      className="relative h-[100dvh] min-h-[100dvh] w-full overflow-hidden"
+    >
       {/* 背景画像 */}
-      <Image src="/images/hero-ricefield.png" alt="夕暮れの黄金色に実った田んぼと稲穂" fill priority sizes="100vw" className="object-cover object-center" style={{ objectFit: 'cover' }} />
+      <Image
+        src="/images/hero-ricefield.png"
+        alt="夕暮れの黄金色に実った田んぼと稲穂"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center"
+        style={{ objectFit: 'cover' }}
+      />
 
       {/* グラデーションオーバーレイ */}
       <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/25 to-foreground/55" />
