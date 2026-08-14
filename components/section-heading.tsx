@@ -20,7 +20,7 @@ export function SectionHeading({ en, ja, intro, tone = 'dark', className }: Sect
       </span>
       <h2
         className={cn(
-          'mt-6 font-serif text-3xl font-medium leading-[1.35] text-balance md:text-4xl lg:text-[2.75rem]',
+          'mt-6 font-serif text-3xl font-medium leading-[1.4] tracking-[0.08em] text-balance md:text-4xl lg:text-[2.75rem]',
           heading,
         )}
       >

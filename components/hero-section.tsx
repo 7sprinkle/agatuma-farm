@@ -17,7 +17,7 @@ export function HeroSection() {
         <p className="font-sans text-[0.7rem] font-medium tracking-[0.45em] text-background/85">
           宮城県角田市 ・ 農家直販
         </p>
-        <h1 className="mt-10 font-serif text-[2.75rem] font-medium leading-[1.25] text-background text-balance sm:text-6xl md:text-7xl">
+        <h1 className="mt-10 font-serif text-[2.5rem] font-normal leading-[1.4] tracking-[0.12em] text-background text-balance sm:text-6xl md:text-7xl">
           一粒に、
           <br />
           この土地の四季を。
