@@ -120,6 +120,6 @@ export const navLinks = [
   { href: '#news', label: 'News' },
   { href: '#service', label: 'Service' },
   { href: '#about', label: 'About' },
-  { href: '#access', label: 'Access' },
+  // { href: '#access', label: 'Access' },
   { href: '#form', label: 'お問い合わせ' },
 ]

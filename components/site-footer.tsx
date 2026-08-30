@@ -17,10 +17,7 @@ export function SiteFooter() {
           <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="font-sans text-sm text-muted-foreground transition-colors hover:text-accent"
-                >
+                <a href={link.href} className="font-sans text-sm text-muted-foreground transition-colors hover:text-accent" >
                   {link.label}
                 </a>
               </li>
@@ -36,12 +33,7 @@ export function SiteFooter() {
           </p>
           <p className="font-sans text-xs text-muted-foreground">
             Website by{' '}
-            <a
-              href="https://ratiolight.jp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 transition-colors hover:text-accent"
-            >
+            <a href="https://ratiolight.jp" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 transition-colors hover:text-accent" >
               ratiolight.jp
             </a>
           </p>
