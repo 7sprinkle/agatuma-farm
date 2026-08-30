@@ -21,15 +21,15 @@ export const metadata: Metadata = {
   title: '我妻農場 | 宮城県角田市のお米 農家直販',
   description:
     '宮城県角田市の我妻農場から、丹精込めて育てた新鮮なお米を直接お届けします。白米・玄米を各種サイズで販売中。',
-  generator: 'v0.app',
+  generator: '',
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
+        url: '/agatuma_farm_icon_2.png',
         media: '(prefers-color-scheme: light)',
       },
       {
-        url: '/icon-dark-32x32.png',
+        url: '/agatuma_farm_icon_2.png',
         media: '(prefers-color-scheme: dark)',
       },
       {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
         type: 'image/svg+xml',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/agatuma_farm_icon_2.png',
   },
 }
 
