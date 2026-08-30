@@ -121,5 +121,5 @@ export const navLinks = [
   { href: '#service', label: 'Service' },
   { href: '#about', label: 'About' },
   // { href: '#access', label: 'Access' },
-  { href: '#form', label: 'お問い合わせ' },
+  { href: '#form', label: 'ご注文' },
 ]
