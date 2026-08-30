@@ -29,12 +29,7 @@ export function OrderForm() {
     <section id="form" className="bg-primary py-28 text-primary-foreground md:py-40">
       <div className="mx-auto max-w-xl px-6">
         <FadeIn>
-          <SectionHeading
-            en="Order"
-            ja="ご注文"
-            tone="light"
-            intro="ご注文、どうぞお気軽にお寄せください。\n内容を確認のうえ、担当より折り返しご連絡いたします。"
-          />
+          <SectionHeading en="Order" ja="ご注文" tone="light" intro="ご注文、どうぞお気軽にお寄せください。内容を確認のうえ、担当より折り返しご連絡いたします。" />
         </FadeIn>
 
         <FadeIn delay={120} className="mt-16">
