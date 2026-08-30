@@ -33,7 +33,7 @@ export const metadata: Metadata = {
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/icon.svg',
+        url: '/agatuma_farm_icon_2.png',
         type: 'image/svg+xml',
       },
     ],
