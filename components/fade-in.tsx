@@ -6,7 +6,7 @@ type FadeInProps = {
   children: ReactNode
   className?: string
   delay?: number
-  as?: 'div' | 'section'
+  as?: "section" | "div" | "li" | "article" | "ul" | "ol"
 }
 
 export function FadeIn({ children, className, delay = 0, as = 'div' }: FadeInProps) {
