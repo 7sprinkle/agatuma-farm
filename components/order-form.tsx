@@ -30,10 +30,10 @@ export function OrderForm() {
       <div className="mx-auto max-w-xl px-6">
         <FadeIn>
           <SectionHeading
-            en="Contact"
+            en="Order"
             ja="ご注文"
             tone="light"
-            intro="ご注文、どうぞお気軽にお寄せください。内容を確認のうえ、担当より折り返しご連絡いたします。"
+            intro="ご注文、どうぞお気軽にお寄せください。\n内容を確認のうえ、担当より折り返しご連絡いたします。"
           />
         </FadeIn>
 
