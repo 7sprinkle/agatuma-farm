@@ -113,7 +113,7 @@ export const products: Product[] = [
 // フォームの商品選択プルダウン用
 export const productOptions = products.map((p) => ({
   value: p.id,
-  label: `${p.name} ${p.size}（¥${p.price.toLocaleString()}）`,
+  label: `${p.name} ${p.size} — ¥${p.price.toLocaleString()}（税込）`,
 }))
 
 export const navLinks = [
