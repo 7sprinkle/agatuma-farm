@@ -25,19 +25,19 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/agatuma_farm_icon_2.png',
+        url: '/images/agatuma_farm_icon_2.png',
         media: '(prefers-color-scheme: light)',
       },
       {
-        url: '/agatuma_farm_icon_2.png',
+        url: '/images/agatuma_farm_icon_2.png',
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/agatuma_farm_icon_2.png',
+        url: '/images/agatuma_farm_icon_2.png',
         type: 'image/svg+xml',
       },
     ],
-    apple: '/agatuma_farm_icon_2.png',
+    apple: '/images/agatuma_farm_icon_2.png',
   },
 }
 
