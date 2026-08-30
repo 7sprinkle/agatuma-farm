@@ -10,7 +10,12 @@ import { useOrder } from '@/components/order-context'
 const fieldClass =
   'w-full border-0 border-b border-background/30 bg-transparent px-0 py-3 text-center font-sans text-base text-background placeholder:text-background/50 transition-colors focus:border-accent focus:outline-none'
 
-type FieldName = 'name' | 'postal_code' | 'address' | 'email' | 'phone' | 'product'
+// HubSpot Forms API
+const HUBSPOT_PORTAL_ID = '242321430'
+const HUBSPOT_FORM_ID = 'f975a073-e580-430d-8f74-75ca6bb38f73'
+const HUBSPOT_ENDPOINT = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`
+
+type FieldName = 'full_name' | 'zip' | 'juusho' | 'email' | 'phone' | 'order_product'
 
 type Errors = Partial<Record<FieldName, string>>
 
@@ -23,62 +28,127 @@ const phonePattern = /^0\d{1,4}-?\d{1,4}-?\d{3,4}$/
 
 export function OrderForm() {
   const { selectedProductId } = useOrder()
+
+  const [fullName, setFullName] = useState('')
+  const [zip, setZip] = useState('')
+  const [juusho, setJuusho] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [product, setProduct] = useState('')
+
   const [errors, setErrors] = useState<Errors>({})
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
+  // サービスセクションの「この商品を注文する」から選択された商品を反映
   useEffect(() => {
     if (selectedProductId) setProduct(selectedProductId)
   }, [selectedProductId])
 
-  function validate(data: Record<FieldName, string>): Errors {
-    const next: Errors = {}
+  // 郵便番号が7桁そろったら zipcloud API で住所を自動入力
+  useEffect(() => {
+    const digits = zip.replace(/[^\d]/g, '')
+    if (digits.length !== 7) return
 
-    if (!data.name.trim()) next.name = 'お名前を入力してください'
+    let aborted = false
+    const controller = new AbortController()
 
-    if (!data.postal_code.trim()) {
-      next.postal_code = '郵便番号を入力してください'
-    } else if (!postalPattern.test(data.postal_code.trim())) {
-      next.postal_code = '郵便番号を正しい形式で入力してください'
+    async function lookupAddress() {
+      try {
+        const res = await fetch(
+          `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${digits}`,
+          { signal: controller.signal },
+        )
+        const json = (await res.json()) as {
+          results: { address1: string; address2: string; address3: string }[] | null
+        }
+        if (aborted) return
+        const hit = json.results?.[0]
+        if (hit) {
+          setJuusho(`${hit.address1}${hit.address2}${hit.address3}`)
+          clearError('juusho')
+        }
+      } catch {
+        // 住所の自動取得に失敗しても手入力できるため、ここではエラー表示しない
+      }
     }
 
-    if (!data.address.trim()) next.address = '住所を入力してください'
+    lookupAddress()
+    return () => {
+      aborted = true
+      controller.abort()
+    }
+  }, [zip])
 
-    if (!data.email.trim()) {
+  function validate(): Errors {
+    const next: Errors = {}
+
+    if (!fullName.trim()) next.full_name = 'お名前を入力してください'
+
+    if (!zip.trim()) {
+      next.zip = '郵便番号を入力してください'
+    } else if (!postalPattern.test(zip.trim())) {
+      next.zip = '郵便番号を正しい形式で入力してください'
+    }
+
+    if (!juusho.trim()) next.juusho = '住所を入力してください'
+
+    if (!email.trim()) {
       next.email = 'メールアドレスを入力してください'
-    } else if (!emailPattern.test(data.email.trim())) {
+    } else if (!emailPattern.test(email.trim())) {
       next.email = 'メールアドレスを正しい形式で入力してください'
     }
 
-    if (!data.phone.trim()) {
+    if (!phone.trim()) {
       next.phone = '電話番号を入力してください'
-    } else if (!phonePattern.test(data.phone.trim())) {
+    } else if (!phonePattern.test(phone.trim())) {
       next.phone = '電話番号を正しい形式で入力してください'
     }
 
-    if (!data.product) next.product = '商品を選択してください'
+    if (!product) next.order_product = '商品を選択してください'
 
     return next
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const form = e.currentTarget
-    const data: Record<FieldName, string> = {
-      name: (form.elements.namedItem('name') as HTMLInputElement)?.value ?? '',
-      postal_code: (form.elements.namedItem('postal_code') as HTMLInputElement)?.value ?? '',
-      address: (form.elements.namedItem('address') as HTMLInputElement)?.value ?? '',
-      email: (form.elements.namedItem('email') as HTMLInputElement)?.value ?? '',
-      phone: (form.elements.namedItem('phone') as HTMLInputElement)?.value ?? '',
-      product,
-    }
+    setSubmitError('')
 
-    const nextErrors = validate(data)
+    const nextErrors = validate()
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) return
 
-    // ※ 実際の HubSpot 連携は後で実装。フロント側の入力値検証まで。
-    setSubmitted(true)
+    const productLabel =
+      productOptions.find((opt) => opt.value === product)?.label ?? product
+
+    setSubmitting(true)
+    try {
+      const res = await fetch(HUBSPOT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: [
+            { name: 'full_name', value: fullName.trim() },
+            { name: 'zip', value: zip.trim() },
+            { name: 'juusho', value: juusho.trim() },
+            { name: 'email', value: email.trim() },
+            { name: 'phone', value: phone.trim() },
+            { name: 'order_product', value: productLabel },
+          ],
+        }),
+      })
+
+      if (!res.ok) throw new Error(`HubSpot responded with ${res.status}`)
+
+      setSubmitted(true)
+    } catch {
+      setSubmitError(
+        '送信中に問題が発生しました。お手数ですが、時間をおいて再度お試しください。',
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   function clearError(field: FieldName) {
@@ -90,64 +160,110 @@ export function OrderForm() {
     })
   }
 
+  function resetForm() {
+    setFullName('')
+    setZip('')
+    setJuusho('')
+    setEmail('')
+    setPhone('')
+    setProduct('')
+    setErrors({})
+    setSubmitError('')
+    setSubmitted(false)
+  }
+
   return (
     <section id="form" className="bg-primary py-28 text-primary-foreground md:py-40">
       <div className="mx-auto max-w-xl px-6">
         <FadeIn>
-          <SectionHeading en="Order" ja="ご注文" tone="light" intro="ご注文、どうぞお気軽にお寄せください。内容を確認のうえ、担当より折り返しご連絡いたします。" />
+          <SectionHeading
+            en="Order"
+            ja="ご注文"
+            tone="light"
+            intro="ご注文、どうぞお気軽にお寄せください。内容を確認のうえ、担当より折り返しご連絡いたします。"
+          />
         </FadeIn>
 
         <FadeIn delay={120} className="mt-16">
           {submitted ? (
-            <div role="status" className="flex flex-col items-center border border-background/20 px-8 py-16 text-center" >
+            <div
+              role="status"
+              className="flex flex-col items-center border border-background/20 px-8 py-16 text-center"
+            >
               <CheckCircle2 className="size-12 text-background" />
-              <h3 className="mt-6 font-serif text-2xl font-medium text-background md:text-3xl"> ご注文ありがとうございます。 </h3>
-              <p className="prose-jp mt-4 max-w-sm font-sans text-sm text-background/80 text-pretty"> 確認メールをお送りしました。内容をご確認のうえ、発送の準備を進めさせていただきます。 </p>
-              <button type="button" onClick={() => setSubmitted(false)} className="group mt-8 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-background" >
+              <h3 className="mt-6 font-serif text-2xl font-medium text-background md:text-3xl">
+                ご注文ありがとうございます。
+              </h3>
+              <p className="prose-jp mt-4 max-w-sm font-sans text-sm text-background/80 text-pretty">
+                確認メールをお送りしました。内容をご確認のうえ、発送の準備を進めさせていただきます。
+              </p>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="group mt-8 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-background"
+              >
                 <span className="h-px w-8 bg-accent transition-all duration-300 group-hover:w-12" />
                 続けて注文する
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col gap-10" noValidate>
-              <Field id="name" label="お名前" required error={errors.name}>
+              <Field id="full_name" label="お名前" required error={errors.full_name}>
                 <input
-                  id="name"
-                  name="name"
+                  id="full_name"
+                  name="full_name"
                   type="text"
                   autoComplete="name"
                   placeholder="我妻 太郎"
-                  onChange={() => clearError('name')}
-                  aria-invalid={errors.name ? true : undefined}
+                  value={fullName}
+                  onChange={(e) => {
+                    setFullName(e.target.value)
+                    clearError('full_name')
+                  }}
+                  aria-invalid={errors.full_name ? true : undefined}
                   className={fieldClass}
                 />
               </Field>
 
-              <Field id="postal_code" label="お届け先（郵便番号）" required error={errors.postal_code}>
+              <Field id="zip" label="お届け先（郵便番号）" required error={errors.zip}>
                 <input
-                  id="postal_code"
-                  name="postal_code"
+                  id="zip"
+                  name="zip"
                   type="text"
                   inputMode="numeric"
                   autoComplete="postal-code"
                   placeholder="981-1525"
-                  onChange={() => clearError('postal_code')}
-                  aria-invalid={errors.postal_code ? true : undefined}
+                  value={zip}
+                  onChange={(e) => {
+                    setZip(e.target.value)
+                    clearError('zip')
+                  }}
+                  aria-invalid={errors.zip ? true : undefined}
                   className={fieldClass}
                 />
+                <p className="mt-2 font-sans text-[0.7rem] text-background/50">
+                  郵便番号を入力すると住所が自動で入力されます
+                </p>
               </Field>
 
-              <Field id="address" label="お届け先（住所）" required error={errors.address}>
+              <Field id="juusho" label="お届け先（住所）" required error={errors.juusho}>
                 <input
-                  id="address"
-                  name="address"
+                  id="juusho"
+                  name="juusho"
                   type="text"
                   autoComplete="street-address"
                   placeholder="宮城県角田市〇〇1-2-3"
-                  onChange={() => clearError('address')}
-                  aria-invalid={errors.address ? true : undefined}
+                  value={juusho}
+                  onChange={(e) => {
+                    setJuusho(e.target.value)
+                    clearError('juusho')
+                  }}
+                  aria-invalid={errors.juusho ? true : undefined}
                   className={fieldClass}
                 />
+                <p className="mt-2 font-sans text-[0.7rem] text-background/50">
+                  番地・建物名は続けてご入力ください
+                </p>
               </Field>
 
               <Field id="email" label="メールアドレス" required error={errors.email}>
@@ -157,7 +273,11 @@ export function OrderForm() {
                   type="email"
                   autoComplete="email"
                   placeholder="example@mail.com"
-                  onChange={() => clearError('email')}
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    clearError('email')
+                  }}
                   aria-invalid={errors.email ? true : undefined}
                   className={fieldClass}
                 />
@@ -170,22 +290,26 @@ export function OrderForm() {
                   type="tel"
                   autoComplete="tel"
                   placeholder="090-0000-0000"
-                  onChange={() => clearError('phone')}
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value)
+                    clearError('phone')
+                  }}
                   aria-invalid={errors.phone ? true : undefined}
                   className={fieldClass}
                 />
               </Field>
 
-              <Field id="product" label="商品選択" required error={errors.product}>
+              <Field id="order_product" label="商品選択" required error={errors.order_product}>
                 <select
-                  id="product"
-                  name="product"
+                  id="order_product"
+                  name="order_product"
                   value={product}
                   onChange={(e) => {
                     setProduct(e.target.value)
-                    clearError('product')
+                    clearError('order_product')
                   }}
-                  aria-invalid={errors.product ? true : undefined}
+                  aria-invalid={errors.order_product ? true : undefined}
                   className={`${fieldClass} appearance-none`}
                 >
                   <option value="" disabled>
@@ -199,9 +323,18 @@ export function OrderForm() {
                 </select>
               </Field>
 
-              <div className="mt-4 flex flex-col items-center">
-                <button type="submit" className="inline-flex items-center justify-center bg-accent px-16 py-4 font-sans text-base font-medium tracking-wide text-accent-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background" >
-                  注文する
+              <div className="mt-4 flex flex-col items-center gap-4">
+                {submitError && (
+                  <p role="alert" className="font-sans text-sm text-accent text-pretty text-center">
+                    {submitError}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="inline-flex items-center justify-center bg-accent px-16 py-4 font-sans text-base font-medium tracking-wide text-accent-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {submitting ? '送信中…' : '注文する'}
                 </button>
               </div>
             </form>
@@ -227,7 +360,10 @@ function Field({
 }) {
   return (
     <div className="text-center">
-      <label htmlFor={id} className="mb-2 flex items-center justify-center gap-2 font-sans text-xs tracking-[0.15em] text-background/80" >
+      <label
+        htmlFor={id}
+        className="mb-2 flex items-center justify-center gap-2 font-sans text-xs tracking-[0.15em] text-background/80"
+      >
         {label}
         {required && (
           <span className="font-sans text-[0.6rem] tracking-widest text-accent">必須</span>
