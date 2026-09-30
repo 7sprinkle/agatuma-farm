@@ -20,7 +20,11 @@ export function ImageBand({ src, alt, quote, caption, align = 'center' }: ImageB
           className="img-zoom object-cover"
         />
       </div>
-      <div className="absolute inset-0 bg-foreground/35" />
+      <div className="absolute inset-0 bg-gradient-to-b from-foreground/55 via-foreground/50 to-foreground/65" />
+      <div
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.2_0.01_60/0.4)_0%,transparent_70%)]"
+        aria-hidden="true"
+      />
 
       <div
         className={`relative mx-auto flex h-full max-w-[86rem] flex-col justify-center px-6 md:px-10 ${
