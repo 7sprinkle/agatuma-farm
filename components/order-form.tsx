@@ -191,23 +191,17 @@ export function OrderForm() {
               className="flex flex-col items-center border border-background/20 px-8 py-16 text-center"
             >
               <CheckCircle2 className="size-12 text-background" />
-<<<<<<< HEAD
               <h3 className="mt-6 font-serif text-2xl font-medium text-background md:text-3xl">
-                ご注文ありがとうございます。
-              </h3>
-              <p className="prose-jp mt-4 max-w-sm font-sans text-sm text-background/80 text-pretty">
-                確認メールをお送りしました。内容をご確認のうえ、発送の準備を進めさせていただきます。
-              </p>
-              <button
-                type="button"
-                onClick={resetForm}
-                className="group mt-8 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-background"
-              >
-=======
-              <h3 className="mt-6 font-serif text-2xl font-medium text-background md:text-3xl"> ご注文ありがとうございます。 </h3>
-              <p className="prose-jp mt-4 max-w-sm font-sans text-sm text-background/80 text-pretty"> 確認メールをお送りしました。ご入金が確認でき次第、発送の準備を進めさせていただきます。 </p>
-              <button type="button" onClick={() => setSubmitted(false)} className="group mt-8 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-background" >
->>>>>>> aa2b21d (add capture)
+                    ご注文ありがとうございます。
+                  </h3>
+                  <p className="prose-jp mt-4 max-w-sm font-sans text-sm text-background/80 text-pretty">
+                    確認メールをお送りしました。ご入金が確認でき次第、発送の準備を進めさせていただきます。
+                  </p>
+                  <button
+                    type="button"
+                    onClick={resetForm}
+                    className="group mt-8 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-background"
+                  >
                 <span className="h-px w-8 bg-accent transition-all duration-300 group-hover:w-12" />
                 続けて注文する
               </button>
