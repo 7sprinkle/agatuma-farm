@@ -38,8 +38,8 @@ export function AboutSection() {
       <FadeIn delay={120} className="mx-auto mt-16 max-w-4xl px-6">
         <div className="group relative aspect-[16/10] overflow-hidden">
           <Image
-            src="/images/about-farm.png"
-            alt="収穫したお米を両手で包む農家の手"
+            src="/captures/upper_2-27.jpg"
+            alt="山あいに広がる実りの田んぼ"
             fill
             sizes="(max-width: 1024px) 100vw, 56rem"
             className="img-zoom object-cover"
