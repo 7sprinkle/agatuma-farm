@@ -6,8 +6,8 @@ export function HeroSection() {
       {/* 画像を確実にフルカバーする */}
       <div className="absolute inset-0">
         <Image
-          src="/images/harvest-hands.png"
-          alt="夕暮れの黄金色に実った田んぼと稲穂"
+          src="/captures/upper_2-46.jpg"
+          alt="青空の下に広がる黄金色の田んぼ"
           fill
           priority
           sizes="100vw"
