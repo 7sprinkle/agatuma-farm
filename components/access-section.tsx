@@ -3,17 +3,6 @@ import { FadeIn } from '@/components/fade-in'
 
 const info = [
   {
-    label: '所在地',
-    en: 'Address',
-    value: (
-      <>
-        〒981-1525
-        <br />
-        宮城県角田市君萱字別当内42-1
-      </>
-    ),
-  },
-  {
     label: '電話番号',
     en: 'Tel',
     value: <>0224-00-0000（受付 9:00〜17:00）</>,
@@ -42,7 +31,7 @@ const info = [
 ]
 
 export function AccessSection() {
-  const mapQuery = encodeURIComponent('宮城県角田市君萱字別当内42-1')
+  const mapQuery = encodeURIComponent('宮城県角田市')
 
   return (
     <section id="access" className="bg-background py-28 md:py-40">
