@@ -9,11 +9,7 @@ export function SiteFooter() {
           AGATUMA&nbsp;FARM
         </p>
 
-        <address className="prose-jp mt-8 font-sans text-sm not-italic text-muted-foreground">
-          〒981-1525　宮城県角田市君萱字別当内42-1
-        </address>
-
-        <nav aria-label="フッターナビゲーション" className="mt-10">
+        <nav aria-label="フッターナビゲーション" className="mt-8">
           <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {navLinks.map((link) => (
               <li key={link.href}>
