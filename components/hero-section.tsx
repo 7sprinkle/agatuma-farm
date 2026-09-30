@@ -15,6 +15,8 @@ export function HeroSection() {
         />
       </div>
 
+      <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/25 to-foreground/55" />
+
       <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-3xl flex-col items-center justify-center px-6 text-center">
         <p className="font-sans text-[0.7rem] font-medium tracking-[0.45em] text-background/85">
           宮城県角田市 ・ 農家直販
