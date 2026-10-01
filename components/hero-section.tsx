@@ -21,12 +21,17 @@ export function HeroSection() {
         <p className="font-sans text-[0.7rem] font-medium tracking-[0.45em] text-background/85">
           宮城県角田市 ・ 農家直販
         </p>
-        <h1 className="mt-10 font-serif text-[2.5rem] font-normal leading-[1.4] tracking-[0.12em] text-background text-balance sm:text-6xl md:text-7xl">
-          一粒に、<br />この土地の<br />四季を。
+        <h1 className="mt-10 font-serif text-[1.9rem] font-normal leading-[1.5] tracking-[0.12em] text-background min-[400px]:text-[2.1rem] sm:text-6xl md:text-7xl">
+          <span className="inline-block">一粒に、</span>
+          <br />
+          <span className="inline-block">この土地の四季を。</span>
         </h1>
-        <p className="mt-10 max-w-md font-sans text-sm leading-loose text-background/85 text-pretty md:text-base">
-          水と土に恵まれた角田の地で、手間を惜しまず育てた一年。
-          農家からあなたの食卓へ、まっすぐにお届けします。
+        <p className="mt-10 max-w-xl font-sans text-sm leading-loose text-background/85 md:text-base">
+          <span className="inline-block">水と土に恵まれた角田の地で、</span>
+          <span className="inline-block">手間を惜しまず育てた一年。</span>
+          <br className="hidden sm:block" />
+          <span className="inline-block">農家からあなたの食卓へ、</span>
+          <span className="inline-block">まっすぐにお届けします。</span>
         </p>
       </div>
 

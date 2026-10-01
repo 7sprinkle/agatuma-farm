@@ -39,7 +39,11 @@ export function ImageBand({ src, alt, quote, caption, align = 'center' }: ImageB
               align === 'center' ? 'max-w-3xl' : 'max-w-2xl'
             }`}
           >
-            {quote}
+            {quote.split('|').map((phrase) => (
+              <span key={phrase} className="inline-block">
+                {phrase}
+              </span>
+            ))}
           </blockquote>
           {caption && (
             <p className="mt-6 font-sans text-xs tracking-[0.3em] text-background/85">
