@@ -33,6 +33,12 @@ export function HeroSection() {
           <span className="inline-block">農家からあなたの食卓へ、</span>
           <span className="inline-block">まっすぐにお届けします。</span>
         </p>
+        <a
+          href="#form"
+          className="mt-10 inline-flex items-center justify-center bg-background px-10 py-4 font-sans text-sm font-medium tracking-[0.25em] text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
+        >
+          ご注文はこちら
+        </a>
       </div>
 
       <div className="absolute inset-x-0 bottom-10 z-10 flex flex-col items-center gap-3">
