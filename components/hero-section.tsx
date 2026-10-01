@@ -22,9 +22,7 @@ export function HeroSection() {
           宮城県角田市 ・ 農家直販
         </p>
         <h1 className="mt-10 font-serif text-[2.5rem] font-normal leading-[1.4] tracking-[0.12em] text-background text-balance sm:text-6xl md:text-7xl">
-          一粒に、
-          <br />
-          この土地の四季を。
+          一粒に、<br />この土地の<br />四季を。
         </h1>
         <p className="mt-10 max-w-md font-sans text-sm leading-loose text-background/85 text-pretty md:text-base">
           水と土に恵まれた角田の地で、手間を惜しまず育てた一年。
