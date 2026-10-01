@@ -35,7 +35,7 @@ export function HeroSection() {
         </p>
         <a
           href="#form"
-          className="mt-10 inline-flex items-center justify-center bg-background px-10 py-4 font-sans text-sm font-medium tracking-[0.25em] text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
+          className="mt-10 inline-flex items-center justify-center border border-background/60 px-8 py-3 font-sans text-xs tracking-[0.3em] text-background/90 transition-colors hover:border-background hover:bg-background/10 hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
         >
           ご注文はこちら
         </a>
