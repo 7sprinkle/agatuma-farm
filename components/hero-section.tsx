@@ -17,11 +17,11 @@ export function HeroSection() {
 
       <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/25 to-foreground/55" />
 
-      <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-3xl flex-col items-center justify-center px-6 text-center">
+      <div className="relative z-10 mx-auto flex h-full min-h-[100svh] max-w-5xl flex-col items-center justify-center px-6 text-center">
         <p className="font-sans text-[0.7rem] font-medium tracking-[0.45em] text-background/85">
           宮城県角田市 ・ 農家直販
         </p>
-        <h1 className="mt-10 font-serif text-[1.9rem] font-normal leading-[1.5] tracking-[0.12em] text-background min-[400px]:text-[2.1rem] sm:text-6xl md:text-7xl">
+        <h1 className="mt-10 whitespace-nowrap font-serif text-[1.9rem] font-normal leading-[1.5] tracking-[0.12em] text-background min-[400px]:text-[2.1rem] sm:text-5xl md:text-6xl lg:text-7xl">
           <span className="inline-block">一粒に、</span>
           <br />
           <span className="inline-block">この土地の四季を。</span>
