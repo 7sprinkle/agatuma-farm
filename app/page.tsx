@@ -17,7 +17,7 @@ export default function Home() {
       <main>
         <HeroSection />
         <StoryIntro />
-        <ImageBand src="/captures/upper_2-114.jpg" alt="山に囲まれた角田の田んぼ" quote="季節はめぐり、|田は静かに|実りを重ねる。" caption="夏 ・ 実りへ向かう頃" />
+        <ImageBand src="/captures/upper_2-34.jpg" alt="山に囲まれた角田の田んぼ" quote="季節はめぐり、|田は静かに|実りを重ねる。" caption="夏 ・ 実りへ向かう頃" />
         <NewsSection />
         <ImageBand src="/captures/upper_2-50.jpg" alt="作業小屋に並ぶ赤いコンバイン" quote="手のひらが覚えている、|この土地の仕事。" caption="秋 ・ 収穫の日々" />
         <ServiceSection />
