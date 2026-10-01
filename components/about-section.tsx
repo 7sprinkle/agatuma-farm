@@ -49,9 +49,9 @@ export function AboutSection() {
               まっすぐ食卓へ。
             </p>
             <p className="prose-jp mt-8 font-sans text-base text-muted-foreground text-pretty">
-              我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。
+              我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。<br />
               自然の恵みと向き合いながら、手間を惜しまず育てたお米を、
-              中間を通さず皆さまの食卓へ直接お届けしています。
+              中間を通さず皆さまの食卓へ直接お届けしています。<br />
               毎日の一膳が、少しでも豊かなものになりますように。
             </p>
           </div>
