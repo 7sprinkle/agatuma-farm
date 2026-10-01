@@ -25,37 +25,40 @@ export function AboutSection() {
           <SectionHeading en="About" ja="我妻農場について" />
         </FadeIn>
 
+      </div>
+
+      {/* 写真とテキストの2カラム（SPは縦積み） */}
+      <div className="mx-auto mt-16 grid max-w-5xl items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
         <FadeIn delay={80}>
-          <p className="mx-auto mt-16 max-w-xl text-center font-serif text-2xl font-medium leading-[1.7] text-foreground text-balance md:text-3xl">
-            安心・安全なお米を、
-            <br />
-            まっすぐ食卓へ。
-          </p>
+          <div className="group relative aspect-[4/5] overflow-hidden">
+            <Image
+              src="/captures/upper_2-112.jpg"
+              alt="我妻農場の田んぼ"
+              fill
+              sizes="(max-width: 768px) 100vw, 32rem"
+              className="img-zoom object-cover"
+            />
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={160}>
+          <div className="text-center md:text-left">
+            <p className="font-serif text-2xl font-medium leading-[1.7] text-foreground text-balance md:text-3xl">
+              安心・安全なお米を、
+              <br />
+              まっすぐ食卓へ。
+            </p>
+            <p className="prose-jp mt-8 font-sans text-base text-muted-foreground text-pretty">
+              我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。
+              自然の恵みと向き合いながら、手間を惜しまず育てたお米を、
+              中間を通さず皆さまの食卓へ直接お届けしています。
+              毎日の一膳が、少しでも豊かなものになりますように。
+            </p>
+          </div>
         </FadeIn>
       </div>
 
-      {/* 写真は本文よりやや広く */}
-      <FadeIn delay={120} className="mx-auto mt-16 max-w-4xl px-6">
-        <div className="group relative aspect-[16/10] overflow-hidden">
-          <Image
-            src="/captures/upper_2-27.jpg"
-            alt="山あいに広がる実りの田んぼ"
-            fill
-            sizes="(max-width: 1024px) 100vw, 56rem"
-            className="img-zoom object-cover"
-          />
-        </div>
-      </FadeIn>
-
-      <div className="mx-auto mt-16 max-w-2xl px-6">
-        <FadeIn>
-          <p className="prose-jp mx-auto max-w-xl text-center font-sans text-base text-muted-foreground text-pretty">
-            我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。
-            自然の恵みと向き合いながら、手間を惜しまず育てたお米を、
-            中間を通さず皆さまの食卓へ直接お届けしています。
-            毎日の一膳が、少しでも豊かなものになりますように。
-          </p>
-        </FadeIn>
+      <div className="mx-auto max-w-2xl px-6">
 
         {/* 3つの約束：中央・罫線区切り */}
         <div className="mt-20 border-t border-border">
