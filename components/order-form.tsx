@@ -5,6 +5,7 @@ import { CheckCircle2 } from 'lucide-react'
 import { productOptions, products } from '@/lib/site-data'
 import { getShippingFee, prefectureFromAddress, yen } from '@/lib/shipping'
 import { SectionHeading } from '@/components/section-heading'
+import { LimitedNote } from '@/components/limited-note'
 import { FadeIn } from '@/components/fade-in'
 import { useOrder } from '@/components/order-context'
 
@@ -195,6 +196,7 @@ export function OrderForm() {
             tone="light"
             intro="ご注文、どうぞお気軽にお寄せください。内容を確認のうえ、担当より折り返しご連絡いたします。"
           />
+          <LimitedNote tone="light" className="mt-10" />
         </FadeIn>
 
         <FadeIn delay={120} className="mt-16">

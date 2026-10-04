@@ -7,6 +7,7 @@ import { SectionHeading } from '@/components/section-heading'
 import { FadeIn } from '@/components/fade-in'
 import { useOrder } from '@/components/order-context'
 import { ShippingInfo } from '@/components/shipping-info'
+import { LimitedNote } from '@/components/limited-note'
 
 const categories = [
   {
@@ -42,6 +43,7 @@ export function ServiceSection() {
             ja="農場のお米"
             intro="白米と玄米、それぞれの持ち味を大切に。暮らしに合わせてお選びいただけます。"
           />
+          <LimitedNote className="mt-10" />
         </FadeIn>
 
         {/* カテゴリ切替（中央下線タブ） */}
