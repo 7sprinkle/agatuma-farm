@@ -1,82 +1,81 @@
+'use client'
+
+import { useId, useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { shippingRegions, shippingWeights, yen } from '@/lib/shipping'
 import { FadeIn } from '@/components/fade-in'
 
 export function ShippingInfo() {
+  const selectId = useId()
+  const [regionName, setRegionName] = useState(shippingRegions[0].name)
+  const region = shippingRegions.find((r) => r.name === regionName) ?? shippingRegions[0]
+
   return (
-    <FadeIn className="mx-auto mt-28 max-w-5xl md:mt-36">
-      <div className="text-center">
-        <p className="font-sans text-[0.65rem] tracking-[0.4em] text-accent">送料 ・ SHIPPING</p>
-        <h3 className="mt-6 font-serif text-2xl font-medium tracking-[0.08em] text-foreground md:text-3xl">
-          送料について
-        </h3>
-        <p className="prose-jp mx-auto mt-6 max-w-xl font-sans text-sm text-muted-foreground text-pretty">
-          宮城県角田市より全国へお届けします。
-          <wbr />
-          重量とお届け先地域により送料が異なります。
-        </p>
-      </div>
-
-      <div
-        className="mt-12 overflow-x-auto border-t border-border"
-        role="region"
-        aria-label="地域別送料表（横にスクロールできます）"
-        tabIndex={0}
+    <FadeIn className="mx-auto mt-20 max-w-2xl md:mt-24">
+      <section
+        aria-labelledby={`${selectId}-heading`}
+        className="border-y border-border py-8 md:py-10"
       >
-        <table className="w-full min-w-[40rem] border-collapse text-left">
-          <caption className="sr-only">地域・重量別の送料（税込）</caption>
-          <thead>
-            <tr className="border-b border-border">
-              <th
-                scope="col"
-                className="sticky left-0 bg-clay py-4 pr-4 font-sans text-xs font-normal tracking-[0.15em] text-muted-foreground"
-              >
-                地域
-              </th>
-              {shippingWeights.map((w) => (
-                <th
-                  key={w}
-                  scope="col"
-                  className="px-3 py-4 text-right font-serif text-base font-medium text-foreground"
-                >
-                  {w}kg
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {shippingRegions.map((region) => (
-              <tr key={region.name} className="border-b border-border">
-                <th
-                  scope="row"
-                  className="sticky left-0 min-w-[9rem] bg-clay py-5 pr-4 align-top font-normal"
-                >
-                  <span className="block font-serif text-base font-medium text-foreground">
-                    {region.name}
-                  </span>
-                  {region.prefectures.length > 1 && (
-                    <span className="mt-1 block max-w-[14rem] font-sans text-[0.68rem] leading-relaxed text-muted-foreground">
-                      {region.prefectures.map((p) => p.replace(/[都府県]$/, '')).join('・')}
-                    </span>
-                  )}
-                </th>
-                {shippingWeights.map((w) => (
-                  <td
-                    key={w}
-                    className="whitespace-nowrap px-3 py-5 text-right align-top font-sans text-sm tabular-nums text-foreground"
-                  >
-                    {yen(region.rates[w])}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-sans text-[0.6rem] tracking-[0.4em] text-accent">送料 ・ SHIPPING</p>
+            <h3
+              id={`${selectId}-heading`}
+              className="mt-3 font-serif text-lg font-medium tracking-[0.08em] text-foreground"
+            >
+              地域別の送料
+            </h3>
+          </div>
 
-      <div className="mt-6 flex flex-col gap-2 font-sans text-xs leading-relaxed text-muted-foreground md:flex-row md:justify-between">
-        <p>表示価格はすべて税込です。</p>
-        <p>※離島・一部地域は追加送料が発生する場合がございます。その場合はご連絡いたします。</p>
-      </div>
+          <div className="flex flex-col gap-2 sm:w-56">
+            <label htmlFor={selectId} className="font-sans text-xs text-muted-foreground">
+              お届け先の地域
+            </label>
+            <div className="relative">
+              <select
+                id={selectId}
+                value={regionName}
+                onChange={(e) => setRegionName(e.target.value)}
+                className="w-full appearance-none border-0 border-b border-border bg-transparent py-2 pr-8 font-serif text-base text-foreground transition-colors focus:border-primary focus:outline-none focus-visible:ring-0"
+              >
+                {shippingRegions.map((r) => (
+                  <option key={r.name} value={r.name}>
+                    {r.name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+          </div>
+        </div>
+
+        {region.prefectures.length > 1 && (
+          <p className="mt-5 font-sans text-xs leading-relaxed text-muted-foreground">
+            {region.prefectures.map((p) => p.replace(/[都府県]$/, '')).join('・')}
+          </p>
+        )}
+
+        <dl
+          aria-live="polite"
+          className="mt-6 grid grid-cols-3 gap-x-4 gap-y-5 sm:grid-cols-6"
+        >
+          {shippingWeights.map((w) => (
+            <div key={w} className="flex flex-col gap-1">
+              <dt className="font-sans text-[0.7rem] tracking-[0.1em] text-muted-foreground">{w}kg</dt>
+              <dd className="whitespace-nowrap font-sans text-sm tabular-nums text-foreground">
+                {yen(region.rates[w])}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <p className="mt-6 font-sans text-[0.7rem] leading-relaxed text-muted-foreground">
+          税込価格です。宮城県角田市より発送いたします。※離島・一部地域は追加送料が発生する場合がございます。
+        </p>
+      </section>
     </FadeIn>
   )
 }
