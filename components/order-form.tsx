@@ -2,7 +2,8 @@
 
 import { useEffect, useState, type FormEvent } from 'react'
 import { CheckCircle2 } from 'lucide-react'
-import { productOptions } from '@/lib/site-data'
+import { productOptions, products } from '@/lib/site-data'
+import { getShippingFee, prefectureFromAddress, yen } from '@/lib/shipping'
 import { SectionHeading } from '@/components/section-heading'
 import { FadeIn } from '@/components/fade-in'
 import { useOrder } from '@/components/order-context'
@@ -35,6 +36,7 @@ export function OrderForm() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [product, setProduct] = useState('')
+  const [zipPrefecture, setZipPrefecture] = useState('')
 
   const [errors, setErrors] = useState<Errors>({})
   const [submitting, setSubmitting] = useState(false)
@@ -66,6 +68,7 @@ export function OrderForm() {
         if (aborted) return
         const hit = json.results?.[0]
         if (hit) {
+          setZipPrefecture(hit.address1)
           setJuusho(`${hit.address1}${hit.address2}${hit.address3}`)
           clearError('juusho')
         }
@@ -80,6 +83,11 @@ export function OrderForm() {
       controller.abort()
     }
   }, [zip])
+
+  const selectedProduct = products.find((p) => p.id === product)
+  const prefecture = zipPrefecture || prefectureFromAddress(juusho)
+  const shipping = selectedProduct ? getShippingFee(prefecture, selectedProduct.size) : undefined
+  const total = selectedProduct && shipping ? selectedProduct.price + shipping.fee : undefined
 
   function validate(): Errors {
     const next: Errors = {}
@@ -119,8 +127,12 @@ export function OrderForm() {
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) return
 
-    const productLabel =
+    const baseLabel =
       productOptions.find((opt) => opt.value === product)?.label ?? product
+    const productLabel =
+      shipping && total !== undefined
+        ? `${baseLabel} / 送料 ${yen(shipping.fee)}（${shipping.region.name}） / 合計 ${yen(total)}（税込）`
+        : `${baseLabel} / 送料 要確認`
 
     setSubmitting(true)
     try {
@@ -167,6 +179,7 @@ export function OrderForm() {
     setEmail('')
     setPhone('')
     setProduct('')
+    setZipPrefecture('')
     setErrors({})
     setSubmitError('')
     setSubmitted(false)
@@ -236,6 +249,7 @@ export function OrderForm() {
                   value={zip}
                   onChange={(e) => {
                     setZip(e.target.value)
+                    setZipPrefecture('')
                     clearError('zip')
                   }}
                   aria-invalid={errors.zip ? true : undefined}
@@ -322,6 +336,42 @@ export function OrderForm() {
                   ))}
                 </select>
               </Field>
+
+              <dl
+                aria-live="polite"
+                className="mx-auto w-full max-w-sm border-y border-background/20 py-6 font-sans text-sm text-background"
+              >
+                <div className="flex items-baseline justify-between gap-4 py-1.5">
+                  <dt className="text-background/70">商品価格</dt>
+                  <dd className="tabular-nums">
+                    {selectedProduct ? yen(selectedProduct.price) : '商品をお選びください'}
+                  </dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-4 py-1.5">
+                  <dt className="text-background/70">
+                    送料
+                    {shipping && (
+                      <span className="ml-2 text-[0.7rem] text-background/50">
+                        {shipping.region.name}
+                      </span>
+                    )}
+                  </dt>
+                  <dd className="text-right tabular-nums">
+                    {shipping
+                      ? yen(shipping.fee)
+                      : selectedProduct
+                        ? '郵便番号を入力してください'
+                        : '—'}
+                  </dd>
+                </div>
+                <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-background/20 pt-4">
+                  <dt className="font-serif text-base">合計</dt>
+                  <dd className="font-serif text-2xl tabular-nums">
+                    {total !== undefined ? yen(total) : '—'}
+                    <span className="ml-1 font-sans text-[0.6rem] text-background/60">税込</span>
+                  </dd>
+                </div>
+              </dl>
 
               <div className="mt-4 flex flex-col items-center gap-4">
                 {submitError && (
