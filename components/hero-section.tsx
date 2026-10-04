@@ -21,27 +21,38 @@ export function HeroSection() {
         <p className="font-sans text-[0.7rem] font-medium tracking-[0.45em] text-background/85">
           宮城県角田市 ・ 農家直販
         </p>
-        <h1 className="mt-10 whitespace-nowrap font-serif text-[1.9rem] font-normal leading-[1.5] tracking-[0.12em] text-background min-[400px]:text-[2.1rem] sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 className="mt-8 whitespace-nowrap font-serif text-[1.9rem] font-normal leading-[1.5] tracking-[0.12em] text-background min-[400px]:text-[2.1rem] sm:text-5xl md:text-6xl lg:text-7xl">
           <span className="inline-block">一粒に、</span>
           <br />
           <span className="inline-block">この土地の四季を。</span>
         </h1>
-        <p className="mt-10 max-w-xl font-sans text-sm leading-loose text-background/85 md:text-base">
+        <p className="mt-8 max-w-xl font-sans text-sm leading-loose text-background/85 md:text-base">
           <span className="inline-block">水と土に恵まれた角田の地で、</span>
           <span className="inline-block">手間を惜しまず育てた一年。</span>
           <br className="hidden sm:block" />
           <span className="inline-block">農家からあなたの食卓へ、</span>
           <span className="inline-block">まっすぐにお届けします。</span>
         </p>
+        <div className="mt-8 flex flex-col items-center gap-4 md:mt-10">
+          <span className="h-px w-10 bg-background/40" aria-hidden="true" />
+          <p className="font-serif text-[0.8rem] leading-[2.1] tracking-[0.12em] text-background/80 md:text-sm">
+            <span className="inline-block">この一年が実らせた分だけを、</span>
+            <span className="inline-block">お届けします。</span>
+            <br />
+            <span className="inline-block">数に限りがございますので、</span>
+            <span className="inline-block">なくなり次第</span>
+            <span className="inline-block">終了とさせていただきます。</span>
+          </p>
+        </div>
         <a
           href="#form"
-          className="mt-10 inline-flex items-center justify-center border border-background/60 px-8 py-3 font-sans text-xs tracking-[0.3em] text-background/90 transition-colors hover:border-background hover:bg-background/10 hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
+          className="mt-8 inline-flex items-center justify-center border border-background/60 px-8 py-3 font-sans text-xs tracking-[0.3em] text-background/90 transition-colors hover:border-background hover:bg-background/10 hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
         >
           ご注文はこちら
         </a>
       </div>
 
-      <div className="absolute inset-x-0 bottom-10 z-10 flex flex-col items-center gap-3">
+      <div className="absolute inset-x-0 bottom-10 z-10 flex flex-col items-center gap-3 [@media(max-height:820px)]:hidden">
         <span className="font-sans text-[0.6rem] tracking-[0.35em] text-background/70">SCROLL</span>
         <span className="h-12 w-px bg-background/50" aria-hidden="true" />
       </div>
