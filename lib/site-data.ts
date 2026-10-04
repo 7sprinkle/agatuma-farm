@@ -21,7 +21,7 @@ export type Product = {
 export const news: NewsItem[] = [
   {
     id: 'news-2026-0901',
-    date: '2026.09.01',
+    date: '2026.10.05',
     category: '収穫',
     title: '令和8年産 新米の販売を開始しました',
     body: '今年も無事に収穫を終え、香り高い新米のご受付を開始いたしました。数量限定でのご案内です。',
