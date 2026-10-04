@@ -99,7 +99,7 @@ export function ServiceSection() {
             </p>
             <ul className="mx-auto mt-8 max-w-xl border-t border-border md:mx-0">
               {visible.map((product) => (
-                <li key={product.id} className="border-b border-border py-8">
+                <li key={product.id} className="border-b border-border py-6">
                   <div className="flex items-baseline justify-between gap-6">
                     <div className="flex items-baseline gap-3">
                       <h3 className="font-serif text-2xl font-medium text-foreground">
@@ -114,13 +114,10 @@ export function ServiceSection() {
                       <span className="ml-1 font-sans text-[0.6rem] text-muted-foreground">税込</span>
                     </p>
                   </div>
-                  <p className="prose-jp mt-3 font-sans text-sm text-muted-foreground text-pretty">
-                    {product.description}
-                  </p>
                   <button
                     type="button"
                     onClick={() => selectProduct(product.id)}
-                    className="group mt-4 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-foreground transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                    className="group mt-3 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-foreground transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                   >
                     <span className="h-px w-8 bg-accent transition-all duration-300 group-hover:w-12" />
                     この商品を注文する
