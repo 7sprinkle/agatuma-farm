@@ -6,6 +6,7 @@ import { products } from '@/lib/site-data'
 import { SectionHeading } from '@/components/section-heading'
 import { FadeIn } from '@/components/fade-in'
 import { useOrder } from '@/components/order-context'
+import { ShippingInfo } from '@/components/shipping-info'
 
 const categories = [
   {
@@ -129,6 +130,8 @@ export function ServiceSection() {
             </ul>
           </FadeIn>
         </div>
+
+        <ShippingInfo />
       </div>
     </section>
   )
