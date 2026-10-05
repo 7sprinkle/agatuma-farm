@@ -28,7 +28,7 @@ export function SectionHeading({ en, ja, intro, tone = 'dark', className }: Sect
       </h2>
       <span className="mt-8 h-px w-10 bg-accent" aria-hidden="true" />
       {intro && (
-        <p className={cn('prose-jp mt-8 max-w-xl font-sans text-sm text-pretty', body)}>{intro}</p>
+        <p className={cn('prose-jp mt-7 max-w-lg font-sans text-sm leading-[1.9] text-pretty md:mt-8', body)}>{intro}</p>
       )}
     </div>
   )

@@ -191,12 +191,8 @@ export function OrderForm() {
               <h3 className="mt-6 font-serif text-2xl font-medium text-background md:text-3xl">
                 ご注文ありがとうございます。
               </h3>
-              <p className="prose-jp mt-6 max-w-sm font-sans text-sm text-background/80">
-                ご入力いただいたメールアドレス宛に、
-                <br />
-                ご注文商品とお振込先を記載した確認メールをお送りしました。
-                <br />
-                内容をご確認のうえ、お手続きをお願いいたします。
+              <p className="prose-jp mt-6 max-w-sm font-sans text-sm leading-[2] text-background/80 text-pretty">
+                ご入力いただいたメールアドレス宛に、ご注文商品とお振込先を記載した確認メールをお送りしました。内容をご確認のうえ、お手続きをお願いいたします。
               </p>
               <p className="prose-jp mt-4 max-w-sm font-sans text-xs text-background/60">
                 メールが届かない場合は、迷惑メールフォルダもご確認ください。
