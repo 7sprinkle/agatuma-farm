@@ -167,9 +167,8 @@ export async function sendOrderEmails(order: OrderData) {
 
   // The farmer already has the order at this point, so a failed confirmation must not
   // surface as a failed order — the customer would resubmit and create a duplicate.
-  // With the onboarding@resend.dev test sender, Resend only delivers to the account
-  // owner's own address, so this commonly fails until a domain is verified.
-  const customer = customerEmail(order)
+  // Log confirmation failures while keeping the farmer notification successful.
+           const customer = customerEmail(order)
   const customerResult = await resend.emails.send({
     from,
     to: order.email,
