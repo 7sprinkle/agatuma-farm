@@ -33,20 +33,9 @@ export function HeroSection() {
           <span className="inline-block">農家からあなたの食卓へ、</span>
           <span className="inline-block">まっすぐにお届けします。</span>
         </p>
-        <div className="mt-8 flex flex-col items-center gap-4 md:mt-10">
-          <span className="h-px w-10 bg-background/40" aria-hidden="true" />
-          <p className="font-serif text-[0.8rem] leading-[2.1] tracking-[0.12em] text-background/80 md:text-sm">
-            <span className="inline-block">この一年が実らせた分だけを、</span>
-            <span className="inline-block">お届けします。</span>
-            <br />
-            <span className="inline-block">数に限りがございますので、</span>
-            <span className="inline-block">なくなり次第</span>
-            <span className="inline-block">終了とさせていただきます。</span>
-          </p>
-        </div>
         <a
           href="#form"
-          className="mt-8 inline-flex items-center justify-center border border-background/60 px-8 py-3 font-sans text-xs tracking-[0.3em] text-background/90 transition-colors hover:border-background hover:bg-background/10 hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
+          className="mt-10 inline-flex items-center justify-center border border-background/60 px-8 py-3 font-sans text-xs tracking-[0.3em] text-background/90 transition-colors hover:border-background hover:bg-background/10 hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
         >
           ご注文はこちら
         </a>
