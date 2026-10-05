@@ -28,7 +28,7 @@ export function AboutSection() {
       </div>
 
       {/* 写真とテキストの2カラム（SPは縦積み） */}
-      <div className="mx-auto mt-16 grid max-w-5xl items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
+      <div className="mx-auto mt-14 grid max-w-5xl items-center gap-10 px-6 md:mt-16 md:grid-cols-2 md:gap-16">
         <FadeIn delay={80}>
           <div className="group relative aspect-[4/5] overflow-hidden">
             <Image
@@ -48,11 +48,8 @@ export function AboutSection() {
               <br />
               まっすぐ食卓へ。
             </p>
-            <p className="prose-jp mt-8 font-sans text-base text-muted-foreground text-pretty">
-              我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。<br />
-              自然の恵みと向き合いながら、手間を惜しまず育てたお米を、
-              中間を通さず皆さまの食卓へ直接お届けしています。<br />
-              毎日の一膳が、少しでも豊かなものになりますように。<br />
+            <p className="prose-jp mt-7 font-sans text-base leading-[2] text-muted-foreground text-pretty md:mt-8">
+              我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。自然の恵みと向き合いながら、手間を惜しまず育てたお米を、中間を通さず皆さまの食卓へ直接お届けしています。毎日の一膳が、少しでも豊かなものになりますように。
             </p>
           </div>
         </FadeIn>

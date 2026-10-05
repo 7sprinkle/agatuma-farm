@@ -26,7 +26,7 @@ export function HeroSection() {
           <br />
           <span className="inline-block">この土地の四季を。</span>
         </h1>
-        <p className="mt-8 max-w-xl font-sans text-sm leading-loose text-background/85 md:text-base">
+        <p className="mt-8 max-w-lg font-sans text-sm leading-[2] text-background/85 text-pretty md:text-base">
           <span className="inline-block">水と土に恵まれた角田の地で、</span>
           <span className="inline-block">手間を惜しまず育てた一年。</span>
           <br className="hidden sm:block" />

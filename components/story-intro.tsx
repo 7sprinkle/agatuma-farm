@@ -2,7 +2,7 @@ import { FadeIn } from '@/components/fade-in'
 
 export function StoryIntro() {
   return (
-    <section className="bg-background py-32 md:py-48">
+    <section className="bg-background py-28 md:py-40">
       <div className="mx-auto max-w-2xl px-6 text-center">
         <FadeIn>
           <p className="font-sans text-[0.7rem] font-medium uppercase tracking-[0.45em] text-accent">
