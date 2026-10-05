@@ -12,10 +12,8 @@ import { useOrder } from '@/components/order-context'
 const fieldClass =
   'w-full border-0 border-b border-background/30 bg-transparent px-0 py-3 text-center font-sans text-base text-background placeholder:text-background/50 transition-colors focus:border-accent focus:outline-none'
 
-// HubSpot Forms API
-const HUBSPOT_PORTAL_ID = '242321430'
-const HUBSPOT_FORM_ID = 'f975a073-e580-430d-8f74-75ca6bb38f73'
-const HUBSPOT_ENDPOINT = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`
+const submitFailureMessage =
+  '注文情報の送信に失敗しました。\nお手数ですが、もう一度お試しください。'
 
 type FieldName = 'full_name' | 'zip' | 'juusho' | 'email' | 'phone' | 'order_product'
 
@@ -122,6 +120,7 @@ export function OrderForm() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (submitting || submitted) return
     setSubmitError('')
 
     const nextErrors = validate()
@@ -137,28 +136,23 @@ export function OrderForm() {
 
     setSubmitting(true)
     try {
-      const res = await fetch(HUBSPOT_ENDPOINT, {
+      const res = await fetch('/api/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          fields: [
-            { name: 'full_name', value: fullName.trim() },
-            { name: 'zip', value: zip.trim() },
-            { name: 'juusho', value: juusho.trim() },
-            { name: 'email', value: email.trim() },
-            { name: 'phone', value: phone.trim() },
-            { name: 'order_product', value: productLabel },
-          ],
+          fullName: fullName.trim(),
+          address: `〒${zip.trim()} ${juusho.trim()}`,
+          email: email.trim(),
+          phone: phone.trim(),
+          orderProduct: productLabel,
         }),
       })
 
-      if (!res.ok) throw new Error(`HubSpot responded with ${res.status}`)
+      if (!res.ok) throw new Error(`Order API responded with ${res.status}`)
 
       setSubmitted(true)
     } catch {
-      setSubmitError(
-        '送信中に問題が発生しました。お手数ですが、時間をおいて再度お試しください。',
-      )
+      setSubmitError(submitFailureMessage)
     } finally {
       setSubmitting(false)
     }
@@ -171,19 +165,6 @@ export function OrderForm() {
       delete next[field]
       return next
     })
-  }
-
-  function resetForm() {
-    setFullName('')
-    setZip('')
-    setJuusho('')
-    setEmail('')
-    setPhone('')
-    setProduct('')
-    setZipPrefecture('')
-    setErrors({})
-    setSubmitError('')
-    setSubmitted(false)
   }
 
   return (
@@ -207,19 +188,16 @@ export function OrderForm() {
             >
               <CheckCircle2 className="size-12 text-background" />
               <h3 className="mt-6 font-serif text-2xl font-medium text-background md:text-3xl">
-                    ご注文ありがとうございます。
-                  </h3>
-                  <p className="prose-jp mt-4 max-w-sm font-sans text-sm text-background/80 text-pretty">
-                    確認メールをお送りしました。ご入金が確認でき次第、発送の準備を進めさせていただきます。
-                  </p>
-                  <button
-                    type="button"
-                    onClick={resetForm}
-                    className="group mt-8 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-background"
-                  >
-                <span className="h-px w-8 bg-accent transition-all duration-300 group-hover:w-12" />
-                続けて注文する
-              </button>
+                ご注文ありがとうございます。
+              </h3>
+              <p className="prose-jp mt-6 max-w-sm font-sans text-sm text-background/80">
+                ご入力いただいたメールアドレス宛に、
+                <br />
+                ご注文内容とお振込先を記載した確認メールをお送りしました。
+              </p>
+              <p className="prose-jp mt-4 max-w-sm font-sans text-xs text-background/60">
+                メールが届かない場合は、迷惑メールフォルダもご確認ください。
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col gap-10" noValidate>
@@ -377,7 +355,7 @@ export function OrderForm() {
 
               <div className="mt-4 flex flex-col items-center gap-4">
                 {submitError && (
-                  <p role="alert" className="font-sans text-sm text-accent text-pretty text-center">
+                  <p role="alert" className="whitespace-pre-line font-sans text-sm text-accent text-pretty text-center">
                     {submitError}
                   </p>
                 )}
@@ -386,7 +364,7 @@ export function OrderForm() {
                   disabled={submitting}
                   className="inline-flex items-center justify-center bg-accent px-16 py-4 font-sans text-base font-medium tracking-wide text-accent-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {submitting ? '送信中…' : '注文する'}
+                  {submitting ? '送信中...' : '注文する'}
                 </button>
               </div>
             </form>
