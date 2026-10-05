@@ -14,7 +14,6 @@ export type Product = {
   name: string
   size: string
   price: number
-  description: string
   image: string
 }
 
@@ -42,8 +41,7 @@ export const products: Product[] = [
     name: '白米',
     size: '5kg',
     price: 2300,
-    description: 'まずはお試しに。一人暮らしや少人数のご家庭にちょうど良いサイズです。',
-    image: '/images/product-hakumai.png',
+      image: '/images/product-hakumai.png',
   },
   {
     id: 'hakumai-10',
@@ -51,8 +49,7 @@ export const products: Product[] = [
     name: '白米',
     size: '10kg',
     price: 4300,
-    description: 'ご家族での日常使いに。毎日のごはんに選ばれている定番サイズです。',
-    image: '/images/product-hakumai.png',
+      image: '/images/product-hakumai.png',
   },
   {
     id: 'hakumai-15',
@@ -60,8 +57,7 @@ export const products: Product[] = [
     name: '白米',
     size: '15kg',
     price: 6300,
-    description: 'よく召し上がるご家庭に。買い足しの手間が減る、ゆとりのある量です。',
-    image: '/images/product-hakumai.png',
+      image: '/images/product-hakumai.png',
   },
   {
     id: 'hakumai-20',
@@ -69,8 +65,7 @@ export const products: Product[] = [
     name: '白米',
     size: '20kg',
     price: 8300,
-    description: '食べ盛りのお子さまがいるご家庭に。ひと月分をまとめて備えられます。',
-    image: '/images/product-hakumai.png',
+      image: '/images/product-hakumai.png',
   },
   {
     id: 'hakumai-25',
@@ -78,8 +73,7 @@ export const products: Product[] = [
     name: '白米',
     size: '25kg',
     price: 10300,
-    description: '三世代のご家族や来客の多いお宅に。たっぷり使える安心の容量です。',
-    image: '/images/product-hakumai.png',
+      image: '/images/product-hakumai.png',
   },
   {
     id: 'hakumai-30',
@@ -87,8 +81,7 @@ export const products: Product[] = [
     name: '白米',
     size: '30kg',
     price: 12300,
-    description: '飲食店や大人数でお使いの方に。1kgあたりが最もお得な大容量です。',
-    image: '/images/product-hakumai.png',
+      image: '/images/product-hakumai.png',
   },
   {
     id: 'genmai-5',
@@ -96,8 +89,7 @@ export const products: Product[] = [
     name: '玄米',
     size: '5kg',
     price: 2000,
-    description: '栄養をそのままに。玄米食をはじめてみたい方におすすめのサイズです。',
-    image: '/images/product-genmai.png',
+      image: '/images/product-genmai.png',
   },
   {
     id: 'genmai-10',
@@ -105,8 +97,7 @@ export const products: Product[] = [
     name: '玄米',
     size: '10kg',
     price: 4000,
-    description: '健康を気づかうご家庭に。噛むほどに広がる自然な甘みをお楽しみください。',
-    image: '/images/product-genmai.png',
+      image: '/images/product-genmai.png',
   },
   {
     id: 'genmai-15',
@@ -114,8 +105,7 @@ export const products: Product[] = [
     name: '玄米',
     size: '15kg',
     price: 6000,
-    description: '玄米食が習慣になった方に。ご自宅の精米機で分づき米にするのもおすすめです。',
-    image: '/images/product-genmai.png',
+      image: '/images/product-genmai.png',
   },
   {
     id: 'genmai-20',
@@ -123,8 +113,7 @@ export const products: Product[] = [
     name: '玄米',
     size: '20kg',
     price: 8000,
-    description: 'ご家族そろって玄米生活を。毎日の食卓をしっかり支える容量です。',
-    image: '/images/product-genmai.png',
+      image: '/images/product-genmai.png',
   },
   {
     id: 'genmai-25',
@@ -132,8 +121,7 @@ export const products: Product[] = [
     name: '玄米',
     size: '25kg',
     price: 10000,
-    description: '精米したてを味わいたい方に。食べる分だけ精米してお使いいただけます。',
-    image: '/images/product-genmai.png',
+      image: '/images/product-genmai.png',
   },
   {
     id: 'genmai-30',
@@ -141,8 +129,7 @@ export const products: Product[] = [
     name: '玄米',
     size: '30kg',
     price: 12000,
-    description: '玄米を主食にされる方や飲食店に。一年を通して頼れる最大容量です。',
-    image: '/images/product-genmai.png',
+      image: '/images/product-genmai.png',
   },
 ]
 

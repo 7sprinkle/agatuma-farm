@@ -145,6 +145,7 @@ export function OrderForm() {
           email: email.trim(),
           phone: phone.trim(),
           orderProduct: productLabel,
+          productSize: selectedProduct?.size ?? '',
         }),
       })
 
@@ -175,7 +176,7 @@ export function OrderForm() {
             en="Order"
             ja="ご注文"
             tone="light"
-            intro="ご注文、どうぞお気軽にお寄せください。内容を確認のうえ、担当より折り返しご連絡いたします。"
+            intro="お支払い方法は、口座振り込みのみとさせていただいております。ご注文後、お振込先とご注文商品を記載した確認メールをお送りしますので、内容をご確認のうえお手続きをお願いいたします。"
           />
           <LimitedNote tone="light" className="mt-10" />
         </FadeIn>
@@ -193,7 +194,9 @@ export function OrderForm() {
               <p className="prose-jp mt-6 max-w-sm font-sans text-sm text-background/80">
                 ご入力いただいたメールアドレス宛に、
                 <br />
-                ご注文内容とお振込先を記載した確認メールをお送りしました。
+                ご注文商品とお振込先を記載した確認メールをお送りしました。
+                <br />
+                内容をご確認のうえ、お手続きをお願いいたします。
               </p>
               <p className="prose-jp mt-4 max-w-sm font-sans text-xs text-background/60">
                 メールが届かない場合は、迷惑メールフォルダもご確認ください。
@@ -329,7 +332,7 @@ export function OrderForm() {
                 </div>
                 <div className="flex items-baseline justify-between gap-4 py-1.5">
                   <dt className="text-background/70">
-                    送料
+                    送料：
                     {shipping && (
                       <span className="ml-2 text-[0.7rem] text-background/50">
                         {shipping.region.name}
@@ -344,8 +347,11 @@ export function OrderForm() {
                         : '—'}
                   </dd>
                 </div>
+                <p className="mt-2 text-xs text-background/60">
+                  送料はお届け先の地域とお米の重量によって異なります。
+                </p>
                 <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-background/20 pt-4">
-                  <dt className="font-serif text-base">合計</dt>
+                  <dt className="font-serif text-base">合計：</dt>
                   <dd className="font-serif text-2xl tabular-nums">
                     {total !== undefined ? yen(total) : '—'}
                     <span className="ml-1 font-sans text-[0.6rem] text-background/60">税込</span>

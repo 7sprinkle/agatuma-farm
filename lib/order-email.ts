@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { getShippingFee, prefectureFromAddress } from '@/lib/shipping'
 
 export type OrderData = {
   fullName: string
@@ -6,16 +7,19 @@ export type OrderData = {
   email: string
   phone: string
   orderProduct: string
+  productSize: string
+  shippingFee?: number
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const maxLengths: Record<keyof OrderData, number> = {
+const maxLengths: Record<Exclude<keyof OrderData, 'shippingFee'>, number> = {
   fullName: 100,
   address: 300,
   email: 254,
   phone: 30,
   orderProduct: 300,
+  productSize: 10,
 }
 
 export function parseOrder(input: unknown): OrderData | null {
@@ -23,12 +27,12 @@ export function parseOrder(input: unknown): OrderData | null {
   const raw = input as Record<string, unknown>
 
   const order = {} as OrderData
-  for (const key of Object.keys(maxLengths) as (keyof OrderData)[]) {
+  for (const key of Object.keys(maxLengths) as (keyof typeof maxLengths)[]) {
     const value = raw[key]
     if (typeof value !== 'string') return null
     const trimmed = value.trim()
     if (!trimmed || trimmed.length > maxLengths[key]) return null
-    order[key] = trimmed
+    ;(order as unknown as Record<string, string>)[key] = trimmed
   }
 
   if (!emailPattern.test(order.email)) return null
