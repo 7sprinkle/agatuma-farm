@@ -145,6 +145,7 @@ export function OrderForm() {
           email: email.trim(),
           phone: phone.trim(),
           orderProduct: productLabel,
+          productSize: selectedProduct?.size ?? '',
         }),
       })
 
@@ -331,7 +332,7 @@ export function OrderForm() {
                 </div>
                 <div className="flex items-baseline justify-between gap-4 py-1.5">
                   <dt className="text-background/70">
-                    送料
+                    送料：
                     {shipping && (
                       <span className="ml-2 text-[0.7rem] text-background/50">
                         {shipping.region.name}
@@ -346,8 +347,11 @@ export function OrderForm() {
                         : '—'}
                   </dd>
                 </div>
+                <p className="mt-2 text-xs text-background/60">
+                  送料はお届け先の地域とお米の重量によって異なります。
+                </p>
                 <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-background/20 pt-4">
-                  <dt className="font-serif text-base">合計</dt>
+                  <dt className="font-serif text-base">合計：</dt>
                   <dd className="font-serif text-2xl tabular-nums">
                     {total !== undefined ? yen(total) : '—'}
                     <span className="ml-1 font-sans text-[0.6rem] text-background/60">税込</span>
