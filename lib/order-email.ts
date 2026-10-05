@@ -70,6 +70,8 @@ const bankInfo = `みやぎ仙南農業協同組合　角田支店
 普通預金　0072833
 口座名義：タカハシ　リナ`
 
+const confirmationCopyEmail = 'qitengyuxi@gmail.com'
+
 function customerEmail(order: OrderData) {
   const text = `${order.fullName} 様
 
@@ -92,7 +94,12 @@ ${bankInfo}
 何卒よろしくお願い申し上げます。
 
 ーーーーーー
-我妻農場`
+我妻農場
+
+お問い合わせ先：
+メール：agatsumafarm@gmail.com
+電話：080-2835-5970
+お問い合わせの際は、注文内容またはお名前をお知らせください。`
 
   const html = layout(`
 <p style="margin:0 0 20px;">${escapeHtml(order.fullName)} 様</p>
@@ -105,7 +112,13 @@ ${block('ご注文商品', order.orderProduct)}
 </div>
 <p style="margin:0 0 20px;">ご入金の確認後、商品の発送準備を進めさせていただきます。</p>
 <p style="margin:0 0 20px;">ご不明な点がございましたら、どうぞお気軽にお問い合わせくださいませ。</p>
-<p style="margin:0;">何卒よろしくお願い申し上げます。</p>`)
+<p style="margin:0 0 20px;">何卒よろしくお願い申し上げます。</p>
+<div style="margin-top:28px;padding-top:20px;border-top:1px solid #e3dccd;font-size:13px;color:#6f665a;">
+  <p style="margin:0 0 8px;font-family:'Hiragino Mincho ProN','Noto Serif JP','Yu Mincho',serif;font-size:16px;color:#3a342c;">我妻農場</p>
+  <p style="margin:0 0 4px;">メール：<a href="mailto:agatsumafarm@gmail.com" style="color:#3f674f;">agatsumafarm@gmail.com</a></p>
+  <p style="margin:0 0 8px;">電話：<a href="tel:08028355970" style="color:#3f674f;">080-2835-5970</a></p>
+  <p style="margin:0;">お問い合わせの際は、注文内容またはお名前をお知らせください。</p>
+</div>`)
 
   return { subject: '【我妻農場】ご注文ありがとうございます', text, html }
 }
@@ -155,7 +168,7 @@ export async function sendOrderEmails(order: OrderData) {
   const farmer = farmerEmail(order)
   const farmerResult = await resend.emails.send({
     from,
-    to: notifyTo,
+    to: [...new Set([notifyTo, confirmationCopyEmail])],
     replyTo: order.email,
     ...farmer,
   })
@@ -171,7 +184,7 @@ export async function sendOrderEmails(order: OrderData) {
            const customer = customerEmail(order)
   const customerResult = await resend.emails.send({
     from,
-    to: order.email,
+    to: [...new Set([order.email, confirmationCopyEmail])],
     replyTo: notifyTo,
     ...customer,
   })
