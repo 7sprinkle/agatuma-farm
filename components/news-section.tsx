@@ -4,10 +4,20 @@ import { FadeIn } from '@/components/fade-in'
 
 export function NewsSection() {
   return (
-    <section id="news" className="bg-background py-28 md:py-40">
+    <section id="news" className="bg-background py-20 sm:py-28 md:py-40">
       <div className="mx-auto max-w-3xl px-6">
         <FadeIn>
-          <SectionHeading en="News" ja="お知らせ" intro="季節のたより、収穫の記録、催しのご案内。農場からの小さなお知らせをお届けします。" />
+          <SectionHeading
+            en="News"
+            ja="お知らせ"
+            intro={
+              <>
+                季節のたより、収穫の記録、催しのご案内。
+                <br className="sm:hidden" />
+                農場からの小さなお知らせをお届けします。
+              </>
+            }
+          />
         </FadeIn>
 
         <ul className="mt-16 border-t border-border md:mt-20">

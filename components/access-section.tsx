@@ -34,7 +34,7 @@ export function AccessSection() {
   const mapQuery = encodeURIComponent('宮城県角田市')
 
   return (
-    <section id="access" className="bg-background py-28 md:py-40">
+    <section id="access" className="bg-background py-20 sm:py-28 md:py-40">
       <div className="mx-auto max-w-2xl px-6">
         <FadeIn>
           <SectionHeading en="Access" ja="アクセス" />

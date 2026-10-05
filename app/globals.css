@@ -214,6 +214,13 @@
   letter-spacing: 0.02em;
 }
 
+/* SP only: break CMS/data-driven Japanese copy at phrase boundaries where supported */
+@media (max-width: 639px) {
+  .prose-jp {
+    word-break: auto-phrase;
+  }
+}
+
 /* 画像のゆるやかなズーム */
 .img-zoom {
   transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);

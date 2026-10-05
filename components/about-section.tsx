@@ -19,7 +19,7 @@ const points = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="bg-background py-28 md:py-40">
+    <section id="about" className="bg-background py-20 sm:py-28 md:py-40">
       <div className="mx-auto max-w-3xl px-6">
         <FadeIn>
           <SectionHeading en="About" ja="我妻農場について" />
@@ -28,7 +28,7 @@ export function AboutSection() {
       </div>
 
       {/* 写真とテキストの2カラム（SPは縦積み） */}
-      <div className="mx-auto mt-14 grid max-w-5xl items-center gap-10 px-6 md:mt-16 md:grid-cols-2 md:gap-16">
+      <div className="mx-auto mt-12 grid max-w-5xl items-center gap-10 px-6 sm:mt-14 md:mt-16 md:grid-cols-2 md:gap-16">
         <FadeIn delay={80}>
           <div className="group relative aspect-[4/5] overflow-hidden">
             <Image
@@ -43,13 +43,27 @@ export function AboutSection() {
 
         <FadeIn delay={160}>
           <div className="text-center md:text-left">
-            <p className="font-serif text-2xl font-medium leading-[1.7] text-foreground text-balance md:text-3xl">
+            <p className="font-serif text-[1.375rem] font-medium leading-[1.7] text-foreground text-balance sm:text-2xl md:text-3xl">
               安心・安全なお米を、
               <br />
               まっすぐ食卓へ。
             </p>
-            <p className="prose-jp mt-7 font-sans text-base leading-[2] text-muted-foreground text-pretty md:mt-8">
-              我妻農場は、宮城県角田市で代々お米づくりを続けてきた農家です。自然の恵みと向き合いながら、手間を惜しまず育てたお米を、中間を通さず皆さまの食卓へ直接お届けしています。毎日の一膳が、少しでも豊かなものになりますように。
+            <p className="prose-jp mt-6 font-sans text-sm leading-[2] text-muted-foreground text-pretty sm:mt-7 sm:text-base md:mt-8">
+              我妻農場は、宮城県角田市で
+              <br className="sm:hidden" />
+              代々お米づくりを続けてきた農家です。
+              <br className="sm:hidden" />
+              自然の恵みと向き合いながら、
+              <br className="sm:hidden" />
+              手間を惜しまず育てたお米を、
+              <br className="sm:hidden" />
+              中間を通さず皆さまの食卓へ
+              <br className="sm:hidden" />
+              直接お届けしています。
+              <br className="sm:hidden" />
+              毎日の一膳が、
+              <br className="sm:hidden" />
+              少しでも豊かなものになりますように。
             </p>
           </div>
         </FadeIn>
@@ -58,10 +72,10 @@ export function AboutSection() {
       <div className="mx-auto max-w-2xl px-6">
 
         {/* 3つの約束：中央・罫線区切り */}
-        <div className="mt-20 border-t border-border">
+        <div className="mt-16 border-t border-border sm:mt-20">
           {points.map((p, i) => (
             <FadeIn as="div" key={p.title} delay={i * 100}>
-              <div className="border-b border-border py-12 text-center">
+              <div className="border-b border-border py-10 text-center sm:py-12">
                 <h3 className="font-serif text-xl font-medium text-foreground md:text-2xl">
                   {p.title}
                 </h3>
