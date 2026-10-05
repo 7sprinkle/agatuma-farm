@@ -35,13 +35,19 @@ export function ServiceSection() {
   const visible = products.filter((p) => p.category === active)
 
   return (
-    <section id="service" className="bg-clay py-28 text-clay-foreground md:py-40">
+    <section id="service" className="bg-clay py-20 text-clay-foreground sm:py-28 md:py-40">
       <div className="mx-auto max-w-6xl px-6">
         <FadeIn>
           <SectionHeading
             en="Service"
             ja="農場のお米"
-            intro="白米と玄米、それぞれの持ち味を大切に。暮らしに合わせてお選びいただけます。"
+            intro={
+              <>
+                白米と玄米、それぞれの持ち味を大切に。
+                <br className="sm:hidden" />
+                暮らしに合わせてお選びいただけます。
+              </>
+            }
           />
           <LimitedNote className="mt-10" />
         </FadeIn>
@@ -69,7 +75,7 @@ export function ServiceSection() {
         </FadeIn>
 
         {/* PC: 画像＋説明を左、お品書きを右の2カラム */}
-        <div className="mt-16 grid items-start gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
+        <div className="mt-12 grid items-start gap-12 sm:mt-16 md:grid-cols-2 md:gap-16 lg:gap-20">
           {/* 左：大きな写真＋説明 */}
           <FadeIn>
             <figure className="group mx-auto max-w-xl text-center md:mx-0 md:text-left">
@@ -111,7 +117,7 @@ export function ServiceSection() {
                         {product.name}
                       </span>
                     </div>
-                    <p className="font-serif text-xl text-foreground">
+                    <p className="whitespace-nowrap font-serif text-xl text-foreground">
                       ¥{product.price.toLocaleString()}
                       <span className="ml-1 font-sans text-[0.6rem] text-muted-foreground">税込</span>
                     </p>

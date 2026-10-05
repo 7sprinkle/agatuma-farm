@@ -17,8 +17,7 @@ export function LimitedNote({ tone = 'dark', className }: LimitedNoteProps) {
         <span className="inline-block">お届けします。</span>
         <br />
         <span className="inline-block">数に限りがございますので、</span>
-        <span className="inline-block">なくなり次第</span>
-        <span className="inline-block">終了とさせていただきます。</span>
+        <span className="inline-block">なくなり次第終了とさせていただきます。</span>
       </p>
     </div>
   )

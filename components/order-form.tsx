@@ -169,14 +169,28 @@ export function OrderForm() {
   }
 
   return (
-    <section id="form" className="bg-primary py-28 text-primary-foreground md:py-40">
+    <section id="form" className="bg-primary py-20 text-primary-foreground sm:py-28 md:py-40">
       <div className="mx-auto max-w-xl px-6">
         <FadeIn>
           <SectionHeading
             en="Order"
             ja="ご注文"
             tone="light"
-            intro="お支払い方法は、口座振り込みのみとさせていただいております。ご注文後、お振込先とご注文商品を記載した確認メールをお送りしますので、内容をご確認のうえお手続きをお願いいたします。"
+            intro={
+              <>
+                お支払い方法は、口座振り込みのみと
+                <br className="sm:hidden" />
+                させていただいております。
+                <br className="sm:hidden" />
+                ご注文後、お振込先とご注文商品を
+                <br className="sm:hidden" />
+                記載した確認メールをお送りしますので、
+                <br className="sm:hidden" />
+                内容をご確認のうえ
+                <br className="sm:hidden" />
+                お手続きをお願いいたします。
+              </>
+            }
           />
           <LimitedNote tone="light" className="mt-10" />
         </FadeIn>
