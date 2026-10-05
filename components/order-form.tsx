@@ -175,7 +175,7 @@ export function OrderForm() {
             en="Order"
             ja="ご注文"
             tone="light"
-            intro="ご注文、どうぞお気軽にお寄せください。内容を確認のうえ、担当より折り返しご連絡いたします。"
+            intro="お支払い方法は、口座振り込みのみとさせていただいております。ご注文後、お振込先とご注文商品を記載した確認メールをお送りしますので、内容をご確認のうえお手続きをお願いいたします。"
           />
           <LimitedNote tone="light" className="mt-10" />
         </FadeIn>
@@ -193,7 +193,9 @@ export function OrderForm() {
               <p className="prose-jp mt-6 max-w-sm font-sans text-sm text-background/80">
                 ご入力いただいたメールアドレス宛に、
                 <br />
-                ご注文内容とお振込先を記載した確認メールをお送りしました。
+                ご注文商品とお振込先を記載した確認メールをお送りしました。
+                <br />
+                内容をご確認のうえ、お手続きをお願いいたします。
               </p>
               <p className="prose-jp mt-4 max-w-sm font-sans text-xs text-background/60">
                 メールが届かない場合は、迷惑メールフォルダもご確認ください。
