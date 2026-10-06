@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { productOptions, products } from '@/lib/site-data'
 import { getShippingFee, prefectureFromAddress, yen } from '@/lib/shipping'
@@ -41,6 +41,12 @@ export function OrderForm() {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const successRef = useRef<HTMLDivElement>(null)
+
+  // 送信成功時のみ、固定ヘッダー分の scroll-padding-top を考慮して完了メッセージへ移動
+  useEffect(() => {
+    if (submitted) successRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [submitted])
 
   // サービスセクションの「この商品を注文する」から選択された商品を反映
   useEffect(() => {
@@ -198,6 +204,7 @@ export function OrderForm() {
         <FadeIn delay={120} className="mt-16">
           {submitted ? (
             <div
+              ref={successRef}
               role="status"
               className="flex flex-col items-center border border-background/20 px-8 py-16 text-center"
             >
