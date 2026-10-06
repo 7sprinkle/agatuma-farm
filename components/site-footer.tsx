@@ -2,7 +2,7 @@ import { navLinks } from '@/lib/site-data'
 
 export function SiteFooter() {
   return (
-    <footer className="bg-background py-20 md:py-28">
+    <footer className="bg-background py-14 md:py-28">
       <div className="mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
         <p className="font-serif text-2xl font-medium tracking-wide text-foreground">我妻農場</p>
         <p className="mt-2 font-sans text-[0.6rem] tracking-[0.4em] text-muted-foreground">
@@ -10,10 +10,10 @@ export function SiteFooter() {
         </p>
 
         <nav aria-label="フッターナビゲーション" className="mt-8">
-          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 md:gap-x-8">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="font-sans text-sm text-muted-foreground transition-colors hover:text-accent" >
+                <a href={link.href} className="inline-flex min-h-11 items-center px-1 font-sans text-sm text-muted-foreground transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" >
                   {link.label}
                 </a>
               </li>
@@ -21,7 +21,7 @@ export function SiteFooter() {
           </ul>
         </nav>
 
-        <span className="mt-12 h-px w-10 bg-border" aria-hidden="true" />
+        <span className="mt-8 h-px w-10 bg-border md:mt-12" aria-hidden="true" />
 
         <div className="mt-8 flex flex-col items-center gap-2">
           <p className="font-sans text-xs text-muted-foreground">
