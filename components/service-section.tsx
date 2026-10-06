@@ -35,7 +35,7 @@ export function ServiceSection() {
   const visible = products.filter((p) => p.category === active)
 
   return (
-    <section id="service" className="bg-clay py-20 text-clay-foreground sm:py-28 md:py-40">
+    <section id="service" className="bg-clay py-16 text-clay-foreground sm:py-28 md:py-40">
       <div className="mx-auto max-w-6xl px-6">
         <FadeIn>
           <SectionHeading
@@ -53,8 +53,8 @@ export function ServiceSection() {
         </FadeIn>
 
         {/* カテゴリ切替（中央下線タブ） */}
-        <FadeIn className="mt-14 flex justify-center">
-          <div role="tablist" aria-label="商品カテゴリ" className="flex items-end gap-12">
+        <FadeIn className="mt-10 flex justify-center sm:mt-14">
+          <div role="tablist" aria-label="商品カテゴリ" className="flex items-end gap-10 sm:gap-12">
             {categories.map((c) => (
               <button
                 key={c.key}
@@ -75,11 +75,11 @@ export function ServiceSection() {
         </FadeIn>
 
         {/* PC: 画像＋説明を左、お品書きを右の2カラム */}
-        <div className="mt-12 grid items-start gap-12 sm:mt-16 md:grid-cols-2 md:gap-16 lg:gap-20">
+        <div className="mt-10 grid items-start gap-12 sm:mt-16 md:grid-cols-2 md:gap-16 lg:gap-20">
           {/* 左：大きな写真＋説明 */}
           <FadeIn>
             <figure className="group mx-auto max-w-xl text-center md:mx-0 md:text-left">
-              <div className="relative aspect-[4/5] overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden md:aspect-[4/5]">
                 <Image
                   key={current.image}
                   src={current.image || '/placeholder.svg'}
@@ -89,7 +89,7 @@ export function ServiceSection() {
                   className="img-zoom object-cover"
                 />
               </div>
-              <figcaption className="mt-10">
+              <figcaption className="mt-8 md:mt-10">
                 <p className="font-serif text-2xl font-medium leading-snug text-foreground text-balance md:text-3xl">
                   {current.lead}
                 </p>
@@ -102,32 +102,38 @@ export function ServiceSection() {
 
           {/* 右：品書き（罫線のみ、カードなし） */}
           <FadeIn className="md:pt-2">
-            <p className="text-center font-sans text-[0.65rem] tracking-[0.4em] text-accent md:text-left">
-              品書き ・ PRICE
-            </p>
-            <ul className="mx-auto mt-8 max-w-xl border-t border-border md:mx-0">
+            <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between">
+              <p className="font-sans text-[0.65rem] tracking-[0.4em] text-accent">
+                品書き ・ PRICE
+              </p>
+              <span className="inline-flex items-center border border-accent/50 px-3 py-1 font-sans text-[0.7rem] tracking-[0.15em] text-accent">
+                令和8年産 新米
+              </span>
+            </div>
+            <ul className="mx-auto mt-6 max-w-xl border-t border-border md:mx-0 md:mt-8">
               {visible.map((product) => (
-                <li key={product.id} className="border-b border-border py-6">
-                  <div className="flex items-baseline justify-between gap-6">
-                    <div className="flex items-baseline gap-3">
+                <li key={product.id} className="border-b border-border py-5 md:py-6">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <div className="flex min-w-0 items-baseline gap-3">
                       <h3 className="font-serif text-2xl font-medium text-foreground">
                         {product.size}
                       </h3>
-                      <span className="font-sans text-[0.7rem] tracking-widest text-muted-foreground">
+                      <span className="truncate font-sans text-xs tracking-widest text-muted-foreground">
                         {product.name}
                       </span>
                     </div>
                     <p className="whitespace-nowrap font-serif text-xl text-foreground">
                       ¥{product.price.toLocaleString()}
-                      <span className="ml-1 font-sans text-[0.6rem] text-muted-foreground">税込</span>
+                      <span className="ml-1 font-sans text-[0.65rem] text-muted-foreground">税込</span>
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => selectProduct(product.id)}
-                    className="group mt-3 inline-flex items-center gap-3 font-sans text-sm tracking-wide text-foreground transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                    aria-label={`${product.name} ${product.size}を注文する`}
+                    className="group mt-2 inline-flex min-h-11 items-center gap-3 py-2 pr-4 font-sans text-sm tracking-wide text-foreground transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
-                    <span className="h-px w-8 bg-accent transition-all duration-300 group-hover:w-12" />
+                    <span className="h-px w-8 bg-accent transition-all duration-300 group-hover:w-12" aria-hidden="true" />
                     この商品を注文する
                   </button>
                 </li>

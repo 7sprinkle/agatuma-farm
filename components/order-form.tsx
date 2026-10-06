@@ -1,19 +1,22 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, Loader2 } from 'lucide-react'
 import { productOptions, products } from '@/lib/site-data'
 import { getShippingFee, prefectureFromAddress, yen } from '@/lib/shipping'
 import { SectionHeading } from '@/components/section-heading'
-import { LimitedNote } from '@/components/limited-note'
 import { FadeIn } from '@/components/fade-in'
 import { useOrder } from '@/components/order-context'
 
 const fieldClass =
-  'w-full border-0 border-b border-background/30 bg-transparent px-0 py-3 text-center font-sans text-base text-background placeholder:text-background/50 transition-colors focus:border-accent focus:outline-none'
+  'min-h-12 w-full border-0 border-b border-background/40 bg-transparent px-0 py-3 text-center font-sans text-base text-background placeholder:text-background/45 transition-colors focus:border-accent focus:outline-none aria-[invalid=true]:border-accent'
 
 const submitFailureMessage =
-  '注文情報の送信に失敗しました。\nお手数ですが、もう一度お試しください。'
+  'ご注文を送信できませんでした。ご注文はまだ確定していません。\n通信環境の良い場所で、少し時間をおいて「注文を確定する」をもう一度押してください。\n入力内容はそのまま残っています。'
+
+const validationMessage = '入力内容に不足があります。赤字の項目をご確認ください。'
+
+const fieldOrder: FieldName[] = ['full_name', 'zip', 'juusho', 'email', 'phone', 'order_product']
 
 type FieldName = 'full_name' | 'zip' | 'juusho' | 'email' | 'phone' | 'order_product'
 
@@ -45,7 +48,10 @@ export function OrderForm() {
 
   // 送信成功時のみ、固定ヘッダー分の scroll-padding-top を考慮して完了メッセージへ移動
   useEffect(() => {
-    if (submitted) successRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if (!submitted || !successRef.current) return
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    successRef.current.focus({ preventScroll: true })
+    successRef.current.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
   }, [submitted])
 
   // サービスセクションの「この商品を注文する」から選択された商品を反映
@@ -131,7 +137,12 @@ export function OrderForm() {
 
     const nextErrors = validate()
     setErrors(nextErrors)
-    if (Object.keys(nextErrors).length > 0) return
+    const firstInvalid = fieldOrder.find((field) => nextErrors[field])
+    if (firstInvalid) {
+      setSubmitError(validationMessage)
+      document.getElementById(firstInvalid)?.focus()
+      return
+    }
 
     const baseLabel =
       productOptions.find((opt) => opt.value === product)?.label ?? product
@@ -175,8 +186,8 @@ export function OrderForm() {
   }
 
   return (
-    <section id="form" className="bg-primary py-20 text-primary-foreground sm:py-28 md:py-40">
-      <div className="mx-auto max-w-xl px-6">
+    <section id="form" className="bg-primary py-16 text-primary-foreground sm:py-28 md:py-40">
+      <div className="mx-auto max-w-xl px-5 sm:px-6">
         <FadeIn>
           <SectionHeading
             en="Order"
@@ -184,29 +195,20 @@ export function OrderForm() {
             tone="light"
             intro={
               <>
-                お支払い方法は、口座振り込みのみと
-                <br className="sm:hidden" />
-                させていただいております。
-                <br className="sm:hidden" />
-                ご注文後、お振込先とご注文商品を
-                <br className="sm:hidden" />
-                記載した確認メールをお送りしますので、
-                <br className="sm:hidden" />
-                内容をご確認のうえ
-                <br className="sm:hidden" />
-                お手続きをお願いいたします。
+                <span className="inline-block">必要事項をご入力のうえ、</span>
+                <span className="inline-block">ご注文ください。</span>
               </>
             }
           />
-          <LimitedNote tone="light" className="mt-10" />
         </FadeIn>
 
-        <FadeIn delay={120} className="mt-16">
+        <FadeIn delay={120} className="mt-10 md:mt-16">
           {submitted ? (
             <div
               ref={successRef}
               role="status"
-              className="flex flex-col items-center border border-background/20 px-8 py-16 text-center"
+              tabIndex={-1}
+              className="flex scroll-mt-24 flex-col items-center border border-background/20 px-5 py-12 text-center outline-none sm:px-8 sm:py-16"
             >
               <CheckCircle2 className="size-12 text-background" />
               <h3 className="mt-6 font-serif text-2xl font-medium text-background md:text-3xl">
@@ -220,7 +222,7 @@ export function OrderForm() {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-10" noValidate>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-8 md:gap-10" noValidate>
               <Field id="full_name" label="お名前" required error={errors.full_name}>
                 <input
                   id="full_name"
@@ -337,58 +339,76 @@ export function OrderForm() {
                 </select>
               </Field>
 
-              <dl
-                aria-live="polite"
-                className="mx-auto w-full max-w-sm border-y border-background/20 py-6 font-sans text-sm text-background"
-              >
-                <div className="flex items-baseline justify-between gap-4 py-1.5">
-                  <dt className="text-background/70">商品価格</dt>
-                  <dd className="tabular-nums">
-                    {selectedProduct ? yen(selectedProduct.price) : '商品をお選びください'}
-                  </dd>
-                </div>
-                <div className="flex items-baseline justify-between gap-4 py-1.5">
-                  <dt className="text-background/70">
-                    送料：
-                    {shipping && (
-                      <span className="ml-2 text-[0.7rem] text-background/50">
-                        {shipping.region.name}
-                      </span>
-                    )}
-                  </dt>
-                  <dd className="text-right tabular-nums">
-                    {shipping
-                      ? yen(shipping.fee)
-                      : selectedProduct
-                        ? '郵便番号を入力してください'
-                        : '—'}
-                  </dd>
-                </div>
-                <p className="mt-2 text-xs text-background/60">
+              <section aria-label="ご注文金額" className="mx-auto w-full max-w-sm">
+                <dl aria-live="polite" className="font-sans text-sm text-background">
+                  <div className="flex items-baseline justify-between gap-4 py-2">
+                    <dt className="shrink-0 text-background/75">商品価格</dt>
+                    <dd className="text-right tabular-nums">
+                      {selectedProduct ? yen(selectedProduct.price) : '商品をお選びください'}
+                    </dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4 py-2">
+                    <dt className="shrink-0 text-background/75">
+                      送料
+                      {shipping && (
+                        <span className="ml-2 text-xs text-background/55">{shipping.region.name}</span>
+                      )}
+                    </dt>
+                    <dd className="text-right tabular-nums">
+                      {shipping
+                        ? yen(shipping.fee)
+                        : selectedProduct
+                          ? '郵便番号を入力してください'
+                          : '—'}
+                    </dd>
+                  </div>
+                  <div className="mt-2 flex items-baseline justify-between gap-4 border-t border-background/40 pt-4">
+                    <dt className="shrink-0 font-serif text-base font-medium">お支払い合計</dt>
+                    <dd className="whitespace-nowrap font-serif text-2xl font-medium tabular-nums">
+                      {total !== undefined ? yen(total) : '—'}
+                      <span className="ml-1 font-sans text-[0.65rem] font-normal text-background/65">税込</span>
+                    </dd>
+                  </div>
+                </dl>
+                <p className="mt-3 font-sans text-xs leading-relaxed text-background/60">
                   送料はお届け先の地域とお米の重量によって異なります。
                 </p>
-                <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-background/20 pt-4">
-                  <dt className="font-serif text-base">合計：</dt>
-                  <dd className="font-serif text-2xl tabular-nums">
-                    {total !== undefined ? yen(total) : '—'}
-                    <span className="ml-1 font-sans text-[0.6rem] text-background/60">税込</span>
-                  </dd>
-                </div>
-              </dl>
+              </section>
 
-              <div className="mt-4 flex flex-col items-center gap-4">
+              <aside
+                aria-labelledby="payment-method-heading"
+                className="mx-auto w-full max-w-sm border border-background/25 px-5 py-5 text-left"
+              >
+                <h3 id="payment-method-heading" className="font-sans text-xs tracking-[0.15em] text-background/70">
+                  お支払い方法
+                </h3>
+                <p className="mt-2 font-serif text-lg font-medium text-background">銀行振込のみ</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-background/80 text-pretty">
+                  ご注文後、お振込先とご注文商品を記載した確認メールをお送りします。内容をご確認のうえ、お手続きをお願いいたします。
+                </p>
+              </aside>
+
+              <div className="flex flex-col items-center gap-4">
                 {submitError && (
-                  <p role="alert" className="whitespace-pre-line font-sans text-sm text-accent text-pretty text-center">
+                  <p
+                    role="alert"
+                    className="w-full max-w-sm whitespace-pre-line border-l-2 border-accent bg-background/5 px-4 py-3 text-left font-sans text-sm leading-relaxed text-background text-pretty"
+                  >
                     {submitError}
                   </p>
                 )}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="inline-flex items-center justify-center bg-accent px-16 py-4 font-sans text-base font-medium tracking-wide text-accent-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background disabled:cursor-not-allowed disabled:opacity-60"
+                  aria-busy={submitting}
+                  className="inline-flex min-h-14 w-full max-w-sm items-center justify-center gap-2 bg-accent px-8 py-4 font-sans text-base font-medium tracking-wide text-accent-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {submitting ? '送信中...' : '注文する'}
+                  {submitting && <Loader2 className="size-5 animate-spin" aria-hidden="true" />}
+                  {submitting ? '送信中です…' : '注文を確定する'}
                 </button>
+                <p className="font-sans text-xs text-background/60">
+                  ボタンを押すとご注文が確定し、確認メールが届きます。
+                </p>
               </div>
             </form>
           )}
@@ -415,16 +435,16 @@ function Field({
     <div className="text-center">
       <label
         htmlFor={id}
-        className="mb-2 flex items-center justify-center gap-2 font-sans text-xs tracking-[0.15em] text-background/80"
+        className="mb-1 flex items-center justify-center gap-2 font-sans text-sm tracking-[0.12em] text-background/85"
       >
         {label}
         {required && (
-          <span className="font-sans text-[0.6rem] tracking-widest text-accent">必須</span>
+          <span className="font-sans text-[0.65rem] tracking-widest text-accent">必須</span>
         )}
       </label>
       {children}
       {error && (
-        <p role="alert" className="mt-2 font-sans text-xs text-accent">
+        <p id={`${id}-error`} role="alert" className="mt-2 font-sans text-sm text-accent">
           {error}
         </p>
       )}

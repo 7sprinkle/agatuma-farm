@@ -30,14 +30,14 @@ export function SiteHeader() {
           : 'border-b border-transparent bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-20 max-w-[86rem] items-center justify-between px-6 md:px-10">
+      <div className="mx-auto flex h-16 max-w-[86rem] items-center justify-between px-5 md:h-20 md:px-10">
         <a
           href="#top"
           className={`group flex items-baseline gap-3 transition-colors ${
             scrolled ? 'text-foreground' : 'text-background'
           }`}
         >
-          <span className="font-serif text-2xl font-medium tracking-wide">我妻農場</span>
+          <span className="font-serif text-xl font-medium tracking-wide md:text-2xl">我妻農場</span>
           <span
             className={`hidden text-[0.6rem] font-medium tracking-[0.4em] sm:inline ${
               scrolled ? 'text-muted-foreground' : 'text-background/70'
@@ -87,23 +87,24 @@ export function SiteHeader() {
         className={`md:hidden ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}
       >
         <div
-          className={`fixed inset-0 top-20 bg-background transition-opacity duration-500 ${
+          className={`fixed inset-0 top-16 overflow-y-auto bg-background transition-opacity duration-300 ${
             open ? 'opacity-100' : 'opacity-0'
           }`}
+          inert={!open}
         >
-          <nav aria-label="モバイルナビゲーション" className="px-8 py-10">
+          <nav aria-label="モバイルナビゲーション" className="px-6 py-6">
             <ul className="flex flex-col">
               {navLinks.map((link, i) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-baseline gap-4 border-b border-border/60 py-5 transition-colors hover:text-accent"
+                    className="flex min-h-14 items-center gap-4 border-b border-border/60 py-3 transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     <span className="font-serif text-xs text-accent">
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span className="font-serif text-2xl text-foreground">{link.label}</span>
+                    <span className="font-serif text-xl text-foreground">{link.label}</span>
                   </a>
                 </li>
               ))}
