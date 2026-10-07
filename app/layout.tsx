@@ -24,20 +24,12 @@ export const metadata: Metadata = {
   generator: '',
   icons: {
     icon: [
-      {
-        url: '/images/agatuma_farm_icon_2.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/images/agatuma_farm_icon_2.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/images/agatuma_farm_icon_2.png',
-        type: 'image/svg+xml',
-      },
+      { url: '/images/icon-round-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/icon-round-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/images/icon-round-512.png', sizes: '512x512', type: 'image/png' },
     ],
-    apple: '/images/agatuma_farm_icon_2.png',
+    shortcut: '/images/icon-round-32.png',
+    apple: [{ url: '/images/apple-icon-round.png', sizes: '180x180', type: 'image/png' }],
   },
 }
 
