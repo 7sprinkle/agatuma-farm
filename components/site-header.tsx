@@ -22,25 +22,48 @@ export function SiteHeader() {
     }
   }, [open])
 
+  useEffect(() => {
+    if (!open) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    const desktop = window.matchMedia('(min-width: 768px)')
+    const onResize = () => {
+      if (desktop.matches) setOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    desktop.addEventListener('change', onResize)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      desktop.removeEventListener('change', onResize)
+    }
+  }, [open])
+
+  const solid = scrolled || open
+
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'border-b border-border/60 bg-background/85 backdrop-blur-md'
-          : 'border-b border-transparent bg-transparent'
+        open
+          ? 'border-b border-border/60 bg-background'
+          : scrolled
+            ? 'border-b border-border/60 bg-background/85 backdrop-blur-md'
+            : 'border-b border-transparent bg-transparent'
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[86rem] items-center justify-between px-5 md:h-20 md:px-10">
         <a
           href="#top"
+          onClick={() => setOpen(false)}
           className={`group flex items-baseline gap-3 transition-colors ${
-            scrolled ? 'text-foreground' : 'text-background'
+            solid ? 'text-foreground' : 'text-background'
           }`}
         >
           <span className="font-serif text-xl font-medium tracking-wide md:text-2xl">我妻農場</span>
           <span
             className={`hidden text-[0.6rem] font-medium tracking-[0.4em] sm:inline ${
-              scrolled ? 'text-muted-foreground' : 'text-background/70'
+              solid ? 'text-muted-foreground' : 'text-background/70'
             }`}
           >
             AGATUMA&nbsp;FARM
@@ -81,17 +104,16 @@ export function SiteHeader() {
           {open ? <X className="size-6" /> : <Menu className="size-6" />}
         </button>
       </div>
+    </header>
 
       <div
         id="mobile-menu"
-        className={`md:hidden ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}
+        className={`fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto overscroll-contain bg-background transition-opacity duration-300 md:hidden ${
+          open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+        inert={!open}
       >
-        <div
-          className={`fixed inset-0 top-16 overflow-y-auto bg-background transition-opacity duration-300 ${
-            open ? 'opacity-100' : 'opacity-0'
-          }`}
-          inert={!open}
-        >
+        <div>
           <nav aria-label="モバイルナビゲーション" className="px-6 py-6">
             <ul className="flex flex-col">
               {navLinks.map((link, i) => (
@@ -112,6 +134,6 @@ export function SiteHeader() {
           </nav>
         </div>
       </div>
-    </header>
+    </>
   )
 }
