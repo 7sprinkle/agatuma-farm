@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { getShippingFee, prefectureFromAddress } from '@/lib/shipping'
+import { getShippingFee, prefectureFromAddress, yen } from '@/lib/shipping'
 
 export type OrderData = {
   fullName: string
@@ -9,11 +9,16 @@ export type OrderData = {
   orderProduct: string
   productSize: string
   shippingFee?: number
+  productPrice?: number
+  totalPrice?: number
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const maxLengths: Record<Exclude<keyof OrderData, 'shippingFee'>, number> = {
+const maxLengths: Record<
+  Exclude<keyof OrderData, 'shippingFee' | 'productPrice' | 'totalPrice'>,
+  number
+> = {
   fullName: 100,
   address: 300,
   email: 254,
@@ -70,6 +75,24 @@ function block(label: string, value: string) {
 <p style="margin:0 0 20px;white-space:pre-wrap;">${escapeHtml(value)}</p>`
 }
 
+function priceLines(order: OrderData) {
+  if (order.totalPrice === undefined) return ''
+  return `商品代金：${yen(order.productPrice ?? 0)}
+送料：${yen(order.shippingFee ?? 0)}
+合計金額：${yen(order.totalPrice)}（税込）`
+}
+
+function priceBlock(order: OrderData) {
+  if (order.totalPrice === undefined) return ''
+  return `<div style="margin:0 0 20px;padding:16px;border:1px solid #e3dccd;">
+  <table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;">
+    <tr><td style="padding:2px 0;color:#6f665a;">商品代金</td><td style="padding:2px 0;text-align:right;">${yen(order.productPrice ?? 0)}</td></tr>
+    <tr><td style="padding:2px 0;color:#6f665a;">送料</td><td style="padding:2px 0;text-align:right;">${yen(order.shippingFee ?? 0)}</td></tr>
+    <tr><td style="padding:10px 0 0;border-top:1px solid #e3dccd;font-weight:bold;">合計金額（税込）</td><td style="padding:10px 0 0;border-top:1px solid #e3dccd;text-align:right;font-weight:bold;font-size:18px;">${yen(order.totalPrice)}</td></tr>
+  </table>
+</div>`
+}
+
 const bankInfo = `みやぎ仙南農業協同組合　角田支店
 普通預金　0072833
 口座名義：タカハシ　リナ`
@@ -86,7 +109,10 @@ function customerEmail(order: OrderData) {
 ご注文商品：
 ${order.orderProduct}
 
-つきましては、下記口座まで代金のお振込みをお願い申し上げます。
+【ご請求金額】
+${priceLines(order)}
+
+つきましては、下記口座まで合計金額のお振込みをお願い申し上げます。
 
 【お振込先】
 ${bankInfo}
@@ -109,7 +135,9 @@ ${bankInfo}
 <p style="margin:0 0 20px;">${escapeHtml(order.fullName)} 様</p>
 <p style="margin:0 0 20px;">この度は、我妻農場の商品をご注文いただき、誠にありがとうございます。<br>ご入金の確認が取れ次第、速やかに発送の手配をさせていただきます。</p>
 ${block('ご注文商品', order.orderProduct)}
-<p style="margin:0 0 8px;">つきましては、下記口座まで代金のお振込みをお願い申し上げます。</p>
+<p style="margin:0 0 4px;font-size:12px;color:#8a8174;letter-spacing:0.08em;">ご請求金額</p>
+${priceBlock(order)}
+<p style="margin:0 0 8px;">つきましては、下記口座まで合計金額のお振込みをお願い申し上げます。</p>
 <div style="margin:0 0 20px;padding:16px;background:#f5f1e8;">
   <p style="margin:0 0 4px;font-size:12px;color:#8a8174;letter-spacing:0.08em;">お振込先</p>
   <p style="margin:0;white-space:pre-wrap;">${bankInfo}</p>
@@ -141,7 +169,10 @@ ${order.email}
 ${order.phone}
 
 商品：
-${order.orderProduct}`
+${order.orderProduct}
+
+ご請求金額：
+${priceLines(order)}`
 
   const html = layout(`
 <p style="margin:0 0 24px;">新しいご注文がありました。</p>
@@ -149,7 +180,9 @@ ${block('お名前', order.fullName)}
 ${block('お届け先', order.address)}
 ${block('メールアドレス', order.email)}
 ${block('電話番号', order.phone)}
-${block('商品', order.orderProduct)}`)
+${block('商品', order.orderProduct)}
+<p style="margin:0 0 4px;font-size:12px;color:#8a8174;letter-spacing:0.08em;">ご請求金額</p>
+${priceBlock(order)}`)
 
   return { subject: '【我妻農場】新しいご注文がありました', text, html }
 }
